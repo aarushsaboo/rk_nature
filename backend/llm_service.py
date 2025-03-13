@@ -26,12 +26,14 @@ def extract_name(query):
     return response if response != "Unknown" else None
 
 def generate_response(query, content, name=None):
+    # Simple, friendly greeting
     greeting = f"Hi {name}!" if name and name != "Unknown" else "Hello!"
     
     prompt = (
-        f"You are a friendly receptionist at R K Nature Cure Home, a naturopathy hospital. "
-        f"We are asking user to provide name and number through other function, incase they reply with name or number, just say thank you and ask how can we help you. "
-        f"Answer the user's question in a warm, concise tone (max 2 lines total, including greeting), using this info: '{content}'. "
+        f"You are a knowledgeable assistant at R K Nature Cure Home, a naturopathy hospital. "
+        f"We are asking user to provide name and number through other function, incase they reply with name or number, just say thank you and ask how can we help you.  "
+        # f"Your response should be brief (2-3 short sentences total) but include appropriate naturopathy terminology. "
+        f"Balance being informative about natural healing with keeping responses concise, using this info: '{content}'. "
         f"Keep it extremely concise and avoid technical terms. If the info isn't enough, briefly suggest contacting us. User query: '{query}'"
     )
     
@@ -40,7 +42,7 @@ def generate_response(query, content, name=None):
         return response.content.strip()
     except Exception as e:
         logging.error(f"Error generating response: {e}")
-        return f"{greeting} Oops, something went wrong! Please call R K Nature Cure Home for help."
+        return f"{greeting} We're experiencing a technical issue. Please call R K Nature Cure Home for immediate assistance."
 
 def generate_summary(existing_summary, new_log_entry):
     if existing_summary:
