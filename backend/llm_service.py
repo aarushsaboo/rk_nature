@@ -1,19 +1,18 @@
-# llm_service.py
 import re
 import logging
-from llama_index.llms.openai import OpenAI
-from config import OPENAI_API_KEY, LLM_MODEL
+from langchain_google_genai import ChatGoogleGenerativeAI
+from config import GOOGLE_API_KEY, LLM_MODEL
 from database import fetch_keywords_data
 
-# Initialize LLM
-llm = OpenAI(model=LLM_MODEL, api_key=OPENAI_API_KEY)
+# Initialize LLM with Gemini
+llm = ChatGoogleGenerativeAI(model=LLM_MODEL, google_api_key=GOOGLE_API_KEY)
 
 def match_query_to_keyword(query):
     data_dict = fetch_keywords_data()
     keyword_options = [f"ID: {id} - Keyword: {info['keyword']}" for id, info in data_dict.items()]
     
     prompt = f"Based on the following user query, choose the most suitable keyword ID from this list: {', '.join(keyword_options)}. User query: {query}"
-    response = llm.complete(prompt).text.strip()
+    response = llm.invoke(prompt).content
     
     match = re.search(r'ID: (\d+)', response)
     return int(match.group(1)) if match and int(match.group(1)) in data_dict else None
@@ -23,7 +22,7 @@ def extract_name(query):
         f"Extract the user's name from this query if provided: '{query}'. "
         f"Return the name as a single word or phrase (e.g., 'John') or 'Unknown' if no name is found."
     )
-    response = llm.complete(prompt).text.strip()
+    response = llm.invoke(prompt).content.strip()
     return response if response != "Unknown" else None
 
 def generate_response(query, content, name=None):
@@ -37,8 +36,8 @@ def generate_response(query, content, name=None):
     )
     
     try:
-        response = llm.complete(prompt)
-        return response.text.strip()
+        response = llm.invoke(prompt)
+        return response.content.strip()
     except Exception as e:
         logging.error(f"Error generating response: {e}")
         return f"{greeting} Oops, something went wrong! Please call R K Nature Cure Home for help."
@@ -62,6 +61,6 @@ def generate_summary(existing_summary, new_log_entry):
             f"where [name], [phone], and [product] are extracted from the log or 'Unknown' if not found."
         )
     
-    summary = llm.complete(prompt).text.strip()
+    summary = llm.invoke(prompt).content.strip()
     logging.info(f"Generated summary: {summary}")
     return summary

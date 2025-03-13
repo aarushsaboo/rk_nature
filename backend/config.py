@@ -1,20 +1,19 @@
-# config.py
 import os
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-# OpenAI Configuration
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-LLM_MODEL = "gpt-3.5-turbo"
+# Google Gemini Configuration
+GOOGLE_API_KEY = "AIzaSyC5zEinq8gaFKWr33_Mjusxbm-fyYS0YZA"
+LLM_MODEL = "gemini-1.5-flash"  # Gemini model name
 
 # Neon DB Configuration
-NEON_DB_USER = os.getenv("NEON_DB_USER")
-NEON_DB_PASSWORD = os.getenv("NEON_DB_PASSWORD")
-NEON_DB_HOST = os.getenv("NEON_DB_HOST")
-NEON_DB_PORT = os.getenv("NEON_DB_PORT")
-NEON_DB_NAME = os.getenv("NEON_DB_NAME")
+NEON_DB_USER = "rkhealth_owner"
+NEON_DB_PASSWORD =  "npg_BtX0zy9ihTvl"
+NEON_DB_HOST = "ep-still-mud-a179txrz-pooler.ap-southeast-1.aws.neon.tech"
+NEON_DB_PORT = "5432"
+NEON_DB_NAME ="rkhealth"
 
 # SQLite Configuration
 SQLITE_DB_PATH = 'extracted_data.db'

@@ -3,3 +3,14 @@ flask-cors
 llama-index-llms-openai
 python-dotenv
 asyncpg
+
+python-dotenv==1.0.1
+requests==2.32.3
+langchain==0.3.20
+langchain_community==0.3.19
+langchain_google_genai==2.0.11
+protobuf>=3.20,<6
+streamlit
+asyncio
+asyncpg
+pandas
