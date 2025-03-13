@@ -1,228 +1,421 @@
+// chatbot.js - A simple widget for embedding a chatbot interface on websites
+
 const ChatbotWidget = {
-    init(config) {
-        this.apiUrl = config.url || 'https://backend-rk.onrender.com/submit_query';
-        this.sessionId = sessionStorage.getItem('chatbotSessionId') || `sess_${Math.random().toString(36).substr(2, 9)}`;
-        sessionStorage.setItem('chatbotSessionId', this.sessionId);
-        this.isOpen = false;
-        this.createChatbot();
-        this.bindEvents();
-    },
+  // Configuration and state
+  config: {
+    apiUrl: "https://backend-rk.onrender.com/submit_query",
+    sessionId: null,
+    isMobile: false,
+  },
 
-    createChatbot() {
-        const viewportWidth = window.innerWidth;
-        const isMobile = viewportWidth <= 768; // Adjusted breakpoint for mobile/tablet
+  elements: {
+    container: null,
+    floatingButton: null,
+    messages: null,
+    input: null,
+  },
 
-        // Floating button
-        const floatingButton = document.createElement('div');
-        floatingButton.id = 'chatbot-floating-button';
-        floatingButton.innerHTML = '💬';
-        floatingButton.style.cssText = `
-            position: fixed; bottom: ${isMobile ? '10px' : '20px'}; right: ${isMobile ? '10px' : '20px'};
-            width: ${isMobile ? '45px' : '50px'}; height: ${isMobile ? '45px' : '50px'};
-            background: linear-gradient(135deg, #007bff, #00c4ff); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; color: white;
-            font-size: ${isMobile ? '22px' : '24px'}; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            z-index: 1000; touch-action: manipulation;
-        `;
-        document.body.appendChild(floatingButton);
+  state: {
+    isOpen: false,
+  },
 
-        // Main container
-        const container = document.createElement('div');
-        container.id = 'chatbot-container';
-        container.style.cssText = `
-            position: fixed; bottom: ${isMobile ? '60px' : '80px'}; right: ${isMobile ? '10px' : '20px'};
-            width: ${isMobile ? '90vw' : '360px'}; height: ${isMobile ? '80vh' : '500px'};
-            max-width: 400px; max-height: 90vh; min-width: 280px; min-height: 300px;
-            border-radius: 15px; background: #fff; box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            display: none; flex-direction: column; overflow: hidden; z-index: 1001;
-        `;
+  // Initialization
+  init(config = {}) {
+    // Set up configuration
+    if (config.url) this.config.apiUrl = config.url
+    this.config.sessionId =
+      sessionStorage.getItem("chatbotSessionId") ||
+      `sess_${Math.random().toString(36).substr(2, 9)}`
+    sessionStorage.setItem("chatbotSessionId", this.config.sessionId)
 
-        // Header
-        const header = document.createElement('div');
-        header.id = 'chatbot-header';
-        header.innerHTML = `
+    // Check device type
+    this.updateDeviceType()
+
+    // Create UI and bind events
+    this.createUI()
+    this.bindEvents()
+  },
+
+  // Detect mobile/desktop
+  updateDeviceType() {
+    this.config.isMobile = window.innerWidth <= 768
+  },
+
+  // UI Creation
+  createUI() {
+    this.createFloatingButton()
+    this.createChatContainer()
+    this.createHeader()
+    this.createMessagesArea()
+    this.createInputArea()
+    this.createFooter()
+
+    // Add welcome message
+    this.addBotMessage("Hi 👋 How can I help you?")
+  },
+
+  createFloatingButton() {
+    const button = document.createElement("div")
+    button.id = "chatbot-floating-button"
+    button.innerHTML = "💬"
+
+    const style = {
+      position: "fixed",
+      bottom: this.config.isMobile ? "10px" : "20px",
+      right: this.config.isMobile ? "10px" : "20px",
+      width: this.config.isMobile ? "45px" : "50px",
+      height: this.config.isMobile ? "45px" : "50px",
+      background: "linear-gradient(135deg, #007bff, #00c4ff)",
+      borderRadius: "50%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "white",
+      fontSize: this.config.isMobile ? "22px" : "24px",
+      cursor: "pointer",
+      boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+      zIndex: "1000",
+      touchAction: "manipulation",
+    }
+
+    Object.assign(button.style, style)
+    document.body.appendChild(button)
+    this.elements.floatingButton = button
+  },
+
+  createChatContainer() {
+    const container = document.createElement("div")
+    container.id = "chatbot-container"
+
+    const style = {
+      position: "fixed",
+      bottom: this.config.isMobile ? "60px" : "80px",
+      right: this.config.isMobile ? "10px" : "20px",
+      width: this.config.isMobile ? "90vw" : "360px",
+      height: this.config.isMobile ? "80vh" : "500px",
+      maxWidth: "400px",
+      maxHeight: "90vh",
+      minWidth: "280px",
+      minHeight: "300px",
+      borderRadius: "15px",
+      background: "#fff",
+      boxShadow: "0 0 15px rgba(0,0,0,0.1)",
+      display: "none",
+      flexDirection: "column",
+      overflow: "hidden",
+      zIndex: "1001",
+    }
+
+    Object.assign(container.style, style)
+    document.body.appendChild(container)
+    this.elements.container = container
+  },
+
+  createHeader() {
+    const header = document.createElement("div")
+    header.id = "chatbot-header"
+
+    header.innerHTML = `
             <div style="display: flex; align-items: center;">
                 <img src="./face.png" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;" alt="RK Nature">
                 <div>
-                    <h3 style="margin: 0; color: white; font-size: ${isMobile ? '16px' : '18px'};">Chat with RK Nature</h3>
-                    <p style="margin: 0; color: white; font-size: ${isMobile ? '12px' : '14px'};">We are online!</p>
+                    <h3 style="margin: 0; color: white; font-size: ${
+                      this.config.isMobile ? "16px" : "18px"
+                    };">Chat with RK Nature</h3>
+                    <p style="margin: 0; color: white; font-size: ${
+                      this.config.isMobile ? "12px" : "14px"
+                    };">We are online!</p>
                 </div>
             </div>
-            <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: white; cursor: pointer; font-size: 20px;">×</span>
-        `;
-        header.style.cssText = `
-            background: linear-gradient(135deg, #007bff, #00c4ff); padding: 10px 15px;
-            border-top-left-radius: 15px; border-top-right-radius: 15px; position: relative;
-        `;
-        container.appendChild(header);
+            <span id="chatbot-close" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: white; cursor: pointer; font-size: 20px;">×</span>
+        `
 
-        // Messages area
-        const messages = document.createElement('div');
-        messages.id = 'chatbot-messages';
-        messages.style.cssText = `
-            flex: 1; padding: 15px; overflow-y: auto; background: #f5f7fa;
-            display: flex; flex-direction: column; -webkit-overflow-scrolling: touch;
-        `;
-        container.appendChild(messages);
-
-        // Welcome message
-        const welcomeMsg = document.createElement('div');
-        welcomeMsg.textContent = `Hi 👋 How can I help you?`;
-        welcomeMsg.style.cssText = `
-            background: #e6f0ff; color: #333; padding: 10px 15px; border-radius: 15px;
-            margin-bottom: 10px; max-width: 80%; align-self: flex-start;
-            font-size: ${isMobile ? '14px' : '16px'}; line-height: 1.4;
-        `;
-        messages.appendChild(welcomeMsg);
-
-        // Input area
-        const inputArea = document.createElement('div');
-        inputArea.style.cssText = `
-            padding: 10px; display: flex; align-items: center; border-top: 1px solid #eee;
-            background: #fff;
-        `;
-        
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.id = 'chatbot-input';
-        input.placeholder = 'Enter your message...';
-        input.style.cssText = `
-            flex: 1; padding: 10px; border: none; outline: none; font-size: ${isMobile ? '14px' : '16px'};
-            border-radius: 10px; background: #f0f0f0; margin-right: 10px;
-        `;
-        
-        const sendButton = document.createElement('button');
-        sendButton.innerHTML = '➤';
-        sendButton.style.cssText = `
-            width: ${isMobile ? '40px' : '45px'}; height: ${isMobile ? '40px' : '45px'};
-            background: linear-gradient(135deg, #007bff, #00c4ff); border: none; border-radius: 50%;
-            color: white; font-size: ${isMobile ? '18px' : '20px'}; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; touch-action: manipulation;
-        `;
-
-        inputArea.appendChild(input);
-        inputArea.appendChild(sendButton);
-        container.appendChild(inputArea);
-
-        // Footer
-        const footer = document.createElement('div');
-        footer.innerHTML = `Powered by <span style="color: #007bff;">R K Nature</span>`;
-        footer.style.cssText = `
-            text-align: center; padding: 5px; font-size: ${isMobile ? '12px' : '14px'}; color: #666;
-            border-top: 1px solid #eee;
-        `;
-        container.appendChild(footer);
-
-        document.body.appendChild(container);
-
-        // Toggle functionality
-        floatingButton.addEventListener('click', () => {
-            this.isOpen = !this.isOpen;
-            container.style.display = this.isOpen ? 'flex' : 'none';
-            floatingButton.style.display = this.isOpen ? 'none' : 'flex';
-        });
-
-        header.querySelector('span').addEventListener('click', () => {
-            this.isOpen = false;
-            container.style.display = 'none';
-            floatingButton.style.display = 'flex';
-        });
-
-        // Dynamic resize handler
-        window.addEventListener('resize', () => {
-            const newViewportWidth = window.innerWidth;
-            const newIsMobile = newViewportWidth <= 768;
-            container.style.width = newIsMobile ? '90vw' : '360px';
-            container.style.height = newIsMobile ? '80vh' : '500px';
-            container.style.bottom = newIsMobile ? '60px' : '80px';
-            container.style.right = newIsMobile ? '10px' : '20px';
-            floatingButton.style.bottom = newIsMobile ? '10px' : '20px';
-            floatingButton.style.right = newIsMobile ? '10px' : '20px';
-        });
-    },
-
-    bindEvents() {
-        const sendButton = document.querySelector('#chatbot-container button');
-        const input = document.querySelector('#chatbot-input');
-        const messages = document.querySelector('#chatbot-messages');
-
-        const isMobile = window.innerWidth <= 768;
-
-        const sendMessage = () => {
-            const query = input.value.trim();
-            if (!query) return;
-
-            const userMsg = document.createElement('div');
-            userMsg.textContent = query;
-            userMsg.style.cssText = `
-                background: linear-gradient(135deg, #007bff, #00c4ff); color: white;
-                padding: 10px 15px; border-radius: 15px; margin: 5px 0; max-width: 80%;
-                align-self: flex-end; font-size: ${isMobile ? '14px' : '16px'}; line-height: 1.4;
-            `;
-            messages.appendChild(userMsg);
-            input.value = '';
-
-            const typingMsg = document.createElement('div');
-            typingMsg.textContent = 'Typing...';
-            typingMsg.id = 'typing-indicator';
-            typingMsg.style.cssText = `
-                background: #e6f0ff; color: #666; padding: 10px 15px; border-radius: 15px;
-                margin: 5px 0; max-width: 80%; align-self: flex-start;
-                font-size: ${isMobile ? '14px' : '16px'}; font-style: italic; line-height: 1.4;
-            `;
-            messages.appendChild(typingMsg);
-            messages.scrollTop = messages.scrollHeight;
-
-            fetch(this.apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    SessionId: this.sessionId,
-                    Query: query
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const typingIndicator = document.getElementById('typing-indicator');
-                if (typingIndicator) typingIndicator.remove();
-
-                const botMsg = document.createElement('div');
-                botMsg.textContent = data.response;
-                botMsg.style.cssText = `
-                    background: #e6f0ff; color: #333; padding: 10px 15px; border-radius: 15px;
-                    margin: 5px 0; max-width: 80%; align-self: flex-start;
-                    font-size: ${isMobile ? '14px' : '16px'}; line-height: 1.4;
-                `;
-                messages.appendChild(botMsg);
-                messages.scrollTop = messages.scrollHeight;
-            })
-            .catch(error => {
-                const typingIndicator = document.getElementById('typing-indicator');
-                if (typingIndicator) typingIndicator.remove();
-
-                const errorMsg = document.createElement('div');
-                errorMsg.textContent = `Error: Could not get response`;
-                errorMsg.style.cssText = `
-                    background: #ffe6e6; color: #d32f2f; padding: 10px 15px; border-radius: 15px;
-                    margin: 5px 0; max-width: 80%; align-self: flex-start;
-                    font-size: ${isMobile ? '14px' : '16px'}; line-height: 1.4;
-                `;
-                messages.appendChild(errorMsg);
-                messages.scrollTop = messages.scrollHeight;
-            });
-        };
-
-        sendButton.addEventListener('click', sendMessage);
-        input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
+    const style = {
+      background: "linear-gradient(135deg, #007bff, #00c4ff)",
+      padding: "10px 15px",
+      borderTopLeftRadius: "15px",
+      borderTopRightRadius: "15px",
+      position: "relative",
     }
-};
+
+    Object.assign(header.style, style)
+    this.elements.container.appendChild(header)
+  },
+
+  createMessagesArea() {
+    const messages = document.createElement("div")
+    messages.id = "chatbot-messages"
+
+    const style = {
+      flex: "1",
+      padding: "15px",
+      overflowY: "auto",
+      background: "#f5f7fa",
+      display: "flex",
+      flexDirection: "column",
+      WebkitOverflowScrolling: "touch",
+    }
+
+    Object.assign(messages.style, style)
+    this.elements.container.appendChild(messages)
+    this.elements.messages = messages
+  },
+
+  createInputArea() {
+    const inputArea = document.createElement("div")
+    inputArea.style.cssText = `
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #eee;
+            background: #fff;
+        `
+
+    // Create input field
+    const input = document.createElement("input")
+    input.type = "text"
+    input.id = "chatbot-input"
+    input.placeholder = "Enter your message..."
+    input.style.cssText = `
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-size: ${this.config.isMobile ? "14px" : "16px"};
+            border-radius: 10px;
+            background: #f0f0f0;
+            margin-right: 10px;
+        `
+
+    // Create send button
+    const sendButton = document.createElement("button")
+    sendButton.innerHTML = "➤"
+    sendButton.style.cssText = `
+            width: ${this.config.isMobile ? "40px" : "45px"};
+            height: ${this.config.isMobile ? "40px" : "45px"};
+            background: linear-gradient(135deg, #007bff, #00c4ff);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: ${this.config.isMobile ? "18px" : "20px"};
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        `
+
+    inputArea.appendChild(input)
+    inputArea.appendChild(sendButton)
+    this.elements.container.appendChild(inputArea)
+    this.elements.input = input
+  },
+
+  createFooter() {
+    const footer = document.createElement("div")
+    footer.innerHTML = `Powered by <span style="color: #007bff;">R K Nature</span>`
+
+    const style = {
+      textAlign: "center",
+      padding: "5px",
+      fontSize: this.config.isMobile ? "12px" : "14px",
+      color: "#666",
+      borderTop: "1px solid #eee",
+    }
+
+    Object.assign(footer.style, style)
+    this.elements.container.appendChild(footer)
+  },
+
+  // Event Handling
+  bindEvents() {
+    // Toggle chat open/close
+    this.elements.floatingButton.addEventListener("click", () =>
+      this.toggleChat(true)
+    )
+    document
+      .getElementById("chatbot-close")
+      .addEventListener("click", () => this.toggleChat(false))
+
+    // Send message events
+    const sendButton = this.elements.container.querySelector("button")
+    const input = this.elements.input
+
+    sendButton.addEventListener("click", () => this.sendMessage())
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") this.sendMessage()
+    })
+
+    // Handle window resizing
+    window.addEventListener("resize", () => {
+      this.updateDeviceType()
+      this.updateResponsiveLayout()
+    })
+  },
+
+  toggleChat(open) {
+    this.state.isOpen = open !== undefined ? open : !this.state.isOpen
+    this.elements.container.style.display = this.state.isOpen ? "flex" : "none"
+    this.elements.floatingButton.style.display = this.state.isOpen
+      ? "none"
+      : "flex"
+
+    if (this.state.isOpen) {
+      this.elements.input.focus()
+    }
+  },
+
+  updateResponsiveLayout() {
+    // Update container sizing
+    this.elements.container.style.width = this.config.isMobile
+      ? "90vw"
+      : "360px"
+    this.elements.container.style.height = this.config.isMobile
+      ? "80vh"
+      : "500px"
+    this.elements.container.style.bottom = this.config.isMobile
+      ? "60px"
+      : "80px"
+    this.elements.container.style.right = this.config.isMobile ? "10px" : "20px"
+
+    // Update floating button position
+    this.elements.floatingButton.style.bottom = this.config.isMobile
+      ? "10px"
+      : "20px"
+    this.elements.floatingButton.style.right = this.config.isMobile
+      ? "10px"
+      : "20px"
+  },
+
+  // Message Handling
+  sendMessage() {
+    const query = this.elements.input.value.trim()
+    if (!query) return
+
+    this.addUserMessage(query)
+    this.elements.input.value = ""
+    this.showTypingIndicator()
+
+    // Send to backend
+    fetch(this.config.apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        SessionId: this.config.sessionId,
+        Query: query,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.removeTypingIndicator()
+        this.addBotMessage(data.response)
+      })
+      .catch((error) => {
+        this.removeTypingIndicator()
+        this.addErrorMessage("Error: Could not get response")
+      })
+  },
+
+  addUserMessage(text) {
+    const msg = document.createElement("div")
+    msg.textContent = text
+
+    const style = {
+      background: "linear-gradient(135deg, #007bff, #00c4ff)",
+      color: "white",
+      padding: "10px 15px",
+      borderRadius: "15px",
+      margin: "5px 0",
+      maxWidth: "80%",
+      alignSelf: "flex-end",
+      fontSize: this.config.isMobile ? "14px" : "16px",
+      lineHeight: "1.4",
+    }
+
+    Object.assign(msg.style, style)
+    this.elements.messages.appendChild(msg)
+    this.scrollToBottom()
+  },
+
+  addBotMessage(text) {
+    const msg = document.createElement("div")
+    msg.textContent = text
+
+    const style = {
+      background: "#e6f0ff",
+      color: "#333",
+      padding: "10px 15px",
+      borderRadius: "15px",
+      margin: "5px 0",
+      maxWidth: "80%",
+      alignSelf: "flex-start",
+      fontSize: this.config.isMobile ? "14px" : "16px",
+      lineHeight: "1.4",
+    }
+
+    Object.assign(msg.style, style)
+    this.elements.messages.appendChild(msg)
+    this.scrollToBottom()
+  },
+
+  addErrorMessage(text) {
+    const msg = document.createElement("div")
+    msg.textContent = text
+
+    const style = {
+      background: "#ffe6e6",
+      color: "#d32f2f",
+      padding: "10px 15px",
+      borderRadius: "15px",
+      margin: "5px 0",
+      maxWidth: "80%",
+      alignSelf: "flex-start",
+      fontSize: this.config.isMobile ? "14px" : "16px",
+      lineHeight: "1.4",
+    }
+
+    Object.assign(msg.style, style)
+    this.elements.messages.appendChild(msg)
+    this.scrollToBottom()
+  },
+
+  showTypingIndicator() {
+    const typingMsg = document.createElement("div")
+    typingMsg.textContent = "Typing..."
+    typingMsg.id = "typing-indicator"
+
+    const style = {
+      background: "#e6f0ff",
+      color: "#666",
+      padding: "10px 15px",
+      borderRadius: "15px",
+      margin: "5px 0",
+      maxWidth: "80%",
+      alignSelf: "flex-start",
+      fontSize: this.config.isMobile ? "14px" : "16px",
+      fontStyle: "italic",
+      lineHeight: "1.4",
+    }
+
+    Object.assign(typingMsg.style, style)
+    this.elements.messages.appendChild(typingMsg)
+    this.scrollToBottom()
+  },
+
+  removeTypingIndicator() {
+    const typingIndicator = document.getElementById("typing-indicator")
+    if (typingIndicator) typingIndicator.remove()
+  },
+
+  scrollToBottom() {
+    this.elements.messages.scrollTop = this.elements.messages.scrollHeight
+  },
+}
 
 // Auto-initialize
-const scriptTag = document.currentScript;
+const scriptTag = document.currentScript
 if (scriptTag && scriptTag.dataset.url) {
-    ChatbotWidget.init({ url: scriptTag.dataset.url });
+  ChatbotWidget.init({ url: scriptTag.dataset.url })
 } else {
-    ChatbotWidget.init({});
+  ChatbotWidget.init({})
 }
