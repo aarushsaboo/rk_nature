@@ -1,0 +1,5 @@
+Flask
+flask-cors
+llama-index-llms-openai
+python-dotenv
+asyncpg
