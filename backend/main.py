@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from config import DEBUG, HOST, PORT
 from database import log_chat, update_summary, get_chat_data, get_content_by_id
-from llm_service import process_query_batch, generate_response_and_summary
+from llm_service import batch_process_queries, match_query_to_keyword, extract_name, generate_response_with_batch, generate_summary
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -37,29 +37,39 @@ async def process_query(session_id, user_query):
         existing_summary = chat_data['summary'] if chat_data and 'summary' in chat_data else None
         
         # Process the query in a batch to reduce LLM calls
-        analysis_results = await process_query_batch(user_query)
+        batch_results = await batch_process_queries(user_query)
         
-        # Get content based on matched keyword
-        matched_id = analysis_results["keyword_id"]
+        # Get matched keyword ID and content
+        matched_id = batch_results.get("keyword_id")
+        
+        # Fallback to original method if batch processing fails
+        if matched_id is None:
+            matched_id = match_query_to_keyword(user_query)
+            
         content = get_content_by_id(matched_id) if matched_id else ""
         
-        # Generate response and summary in a single call
-        result = await generate_response_and_summary(
-            user_query, 
-            analysis_results, 
-            content, 
-            session_id, 
-            existing_summary
-        )
+        # Generate response using batch results to avoid duplicate LLM calls
+        response = await generate_response_with_batch(user_query, content, batch_results)
         
         # Log the conversation
-        new_log_entry = f"User: {user_query} | Bot: {result['response']}"
+        new_log_entry = f"User: {user_query} | Bot: {response}"
         await log_chat(session_id, new_log_entry)
         
-        # Update summary
-        await update_summary(session_id, result['summary'])
+        # Generate and update summary (using original method)
+        summary = generate_summary(existing_summary, new_log_entry)
+        await update_summary(session_id, summary)
         
-        return jsonify({"response": result['response'], "SessionId": session_id})
+        # Add prompts for missing information
+        final_answer = response
+        
+        if "User: Unknown" in summary and "Phone: Unknown" in summary:
+            final_answer += "\n\nCan you share your name and number to help us better?"
+        elif "User: Unknown" in summary:
+            final_answer += "\n\nCan you share your name to help us better?"
+        elif "Phone: Unknown" in summary:
+            final_answer += "\n\nCan you share your number to help us better?"
+        
+        return jsonify({"response": final_answer, "SessionId": session_id})
         
     except Exception as e:
         logging.error(f"Error processing query: {e}", exc_info=True)
