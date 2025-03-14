@@ -29,13 +29,49 @@ def generate_response(query, content, name=None):
     # Simple, friendly greeting
     greeting = f"Hi {name}!" if name and name != "Unknown" else "Hello!"
     
-    prompt = (
-        f"You are a knowledgeable assistant at R K Nature Cure Home, a naturopathy hospital. "
-        f"We are asking user to provide name and number through other function, incase they reply with name or number, just say thank you and ask how can we help you.  "
-        # f"Your response should be brief (2-3 short sentences total) but include appropriate naturopathy terminology. "
-        f"Balance being informative about natural healing with keeping responses concise, using this info: '{content}'. "
-        f"Keep it extremely concise and avoid technical terms. If the info isn't enough, briefly suggest contacting us. User query: '{query}'"
+    # Check if a name or phone number is being provided
+    name_or_number_check = (
+        f"Analyze this message carefully: '{query}'. "
+        f"Is this ONLY providing personal information like a name or phone number, with NO question, "
+        f"request, or health issue? For example, 'John Smith' or '9876543210' would be a 'yes', "
+        f"but 'What payment methods do you accept?' would be a 'no'. "
+        f"Answer with just 'yes' or 'no'."
     )
+    is_just_name_or_number = llm.invoke(name_or_number_check).content.strip().lower() == "yes"
+    
+    if is_just_name_or_number:
+        return f"{greeting} Thank you for that information. How can we help you today?"
+    
+    # List of common health conditions to check for
+    health_conditions = [
+        "back pain", "headache", "stress", "anxiety", "weight", "kidney", 
+        "blood pressure", "asthma", "digestion", "sleep", "joint pain"
+    ]
+    
+    # Check if query mentions any health condition
+    mentioned_conditions = []
+    for condition in health_conditions:
+        if condition in query.lower():
+            mentioned_conditions.append(condition)
+    
+    if mentioned_conditions:
+        # Modify the prompt to be more proactive with suggestions
+        condition_str = ", ".join(mentioned_conditions)
+        prompt = (
+            f"You are a friendly receptionist at R K Nature Cure Home, a naturopathy hospital. "
+            f"The user mentioned these health issues: {condition_str}. "
+            f"Using ONLY the information in this text: '{content}', provide a warm, concise response (max 2 lines) "
+            f"that specifically mentions therapies or treatments we offer for their condition. "
+            f"Be PROACTIVE - don't just say 'we can help' but mention 2-3 specific treatments. "
+            f"End with a brief invitation to schedule an appointment. User query: '{query}'"
+        )
+    else:
+        prompt = (
+            f"You are a friendly receptionist at R K Nature Cure Home, a naturopathy hospital. "
+            f"We are asking user to provide name and number through other function, incase they reply with name or number, just say thank you and ask how can we help you. "
+            f"Answer the user's question in a warm, concise tone (max 2 lines total, including greeting), using this info: '{content}'. "
+            f"Keep it extremely concise and avoid technical terms. If the info isn't enough, briefly suggest contacting us. User query: '{query}'"
+        )
     
     try:
         response = llm.invoke(prompt)
