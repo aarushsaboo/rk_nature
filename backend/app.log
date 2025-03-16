@@ -49,3 +49,164 @@
 2025-03-16 23:13:05,354 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
 2025-03-16 23:13:06,523 - werkzeug - WARNING -  * Debugger is active!
 2025-03-16 23:13:06,526 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:21:24,205 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.29.59:8000
+2025-03-16 23:21:24,206 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-16 23:21:24,211 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:21:25,414 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:21:25,417 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:21:30,564 - werkzeug - INFO - 192.168.29.59 - - [16/Mar/2025 23:21:30] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-16 23:21:30,567 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: hi
+2025-03-16 23:21:33,542 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-16 23:21:35,539 - root - INFO - Sending response: {'response': "Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home. Please call us for more details. Our natural healing approach focuses on your body's self-healing ability.\n\nCan you share your name and number to help us better?", 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'General'}
+2025-03-16 23:21:35,542 - werkzeug - INFO - 192.168.29.59 - - [16/Mar/2025 23:21:35] "POST /submit_query HTTP/1.1" 200 -
+2025-03-16 23:21:56,923 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:21:56,924 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:21:59,945 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:22:01,135 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:22:01,138 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:44:02,069 - werkzeug - INFO - 192.168.29.59 - - [16/Mar/2025 23:44:02] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-16 23:44:02,074 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: hi
+2025-03-16 23:44:06,314 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-16 23:44:08,174 - root - INFO - Sending response: {'response': 'Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home. Please call us for more details.\n\nCan you share your name and number to help us better?', 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'General'}
+2025-03-16 23:44:08,175 - werkzeug - INFO - 192.168.29.59 - - [16/Mar/2025 23:44:08] "POST /submit_query HTTP/1.1" 200 -
+2025-03-16 23:51:24,408 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\database.py', reloading
+2025-03-16 23:51:24,409 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\database.py', reloading
+2025-03-16 23:51:26,652 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:51:28,480 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:51:28,484 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:51:50,898 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\database.py', reloading
+2025-03-16 23:51:50,898 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\database.py', reloading
+2025-03-16 23:51:53,488 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:51:54,750 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:51:54,752 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:52:08,248 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\database.py', reloading
+2025-03-16 23:52:08,248 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\database.py', reloading
+2025-03-16 23:52:11,188 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:52:12,377 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:52:12,380 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:52:17,905 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\database.py', reloading
+2025-03-16 23:52:17,906 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\database.py', reloading
+2025-03-16 23:52:20,658 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:52:21,872 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:52:21,875 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:52:56,448 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:52:56,449 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:52:59,016 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:53:00,270 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:53:00,273 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:53:12,613 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:53:12,616 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:53:12,617 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:53:15,696 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:53:16,947 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:53:16,949 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:53:19,526 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:53:19,526 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:53:22,191 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:53:23,497 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:53:23,500 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:53:36,376 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\__init__.py', reloading
+2025-03-16 23:53:36,381 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\base_events.py', reloading
+2025-03-16 23:53:36,430 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\coroutines.py', reloading
+2025-03-16 23:53:36,432 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\events.py', reloading
+2025-03-16 23:53:36,446 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\exceptions.py', reloading
+2025-03-16 23:53:36,448 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\futures.py', reloading
+2025-03-16 23:53:36,451 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\locks.py', reloading
+2025-03-16 23:53:36,465 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\protocols.py', reloading
+2025-03-16 23:53:36,468 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\runners.py', reloading
+2025-03-16 23:53:36,474 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\queues.py', reloading
+2025-03-16 23:53:36,478 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\streams.py', reloading
+2025-03-16 23:53:36,490 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\subprocess.py', reloading
+2025-03-16 23:53:36,495 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\tasks.py', reloading
+2025-03-16 23:53:36,507 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\taskgroups.py', reloading
+2025-03-16 23:53:36,513 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\timeouts.py', reloading
+2025-03-16 23:53:36,514 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\threads.py', reloading
+2025-03-16 23:53:36,516 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\transports.py', reloading
+2025-03-16 23:53:36,518 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\windows_events.py', reloading
+2025-03-16 23:53:39,238 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:53:40,462 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:53:40,465 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:59:05,963 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:59:05,966 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:59:08,187 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:59:09,504 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:59:09,508 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-17 00:00:07,498 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:00:07,498 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:00:07,499 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:00:09,915 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-17 00:00:11,183 - werkzeug - WARNING -  * Debugger is active!
+2025-03-17 00:00:11,186 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-17 00:00:46,572 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:00:46,574 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:00:46,574 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:00:49,522 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-17 00:00:50,715 - werkzeug - WARNING -  * Debugger is active!
+2025-03-17 00:00:50,718 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-17 00:01:25,115 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:01:25,117 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:01:25,117 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:01:28,017 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-17 00:01:29,362 - werkzeug - WARNING -  * Debugger is active!
+2025-03-17 00:01:29,365 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-17 00:01:40,723 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:01:40,726 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:01:40,726 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:01:42,905 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-17 00:01:44,123 - werkzeug - WARNING -  * Debugger is active!
+2025-03-17 00:01:44,126 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-17 00:02:29,003 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:02:29,004 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:02:31,246 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-17 00:02:32,665 - werkzeug - WARNING -  * Debugger is active!
+2025-03-17 00:02:32,668 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-17 00:09:33,647 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:09:33,650 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:09:33,650 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:09:36,851 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-17 00:09:38,030 - werkzeug - WARNING -  * Debugger is active!
+2025-03-17 00:09:38,033 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-17 00:10:42,751 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-17 00:10:42,753 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-17 00:10:45,627 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-17 00:10:46,836 - werkzeug - WARNING -  * Debugger is active!
+2025-03-17 00:10:46,840 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-17 00:10:58,814 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:10:58] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-17 00:10:58,819 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: hi
+2025-03-17 00:11:01,857 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-17 00:11:03,767 - root - INFO - Sending response: {'response': 'Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home.', 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'General'}
+2025-03-17 00:11:03,771 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:11:03] "POST /submit_query HTTP/1.1" 200 -
+2025-03-17 00:11:10,817 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:11:10] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-17 00:11:10,819 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: i feel sick
+2025-03-17 00:11:13,029 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-17 00:11:14,970 - root - INFO - Sending response: {'response': 'Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home.', 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'Emergency'}
+2025-03-17 00:11:14,976 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:11:14] "POST /submit_query HTTP/1.1" 200 -
+2025-03-17 00:11:22,452 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:11:22] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-17 00:11:22,456 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: dude i have a headache
+2025-03-17 00:11:24,753 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-17 00:11:26,654 - root - INFO - Sending response: {'response': 'Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home.', 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'Emergency'}
+2025-03-17 00:11:26,658 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:11:26] "POST /submit_query HTTP/1.1" 200 -
+2025-03-17 00:11:37,601 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:11:37,604 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:11:37,604 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-17 00:11:40,285 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-17 00:11:41,477 - werkzeug - WARNING -  * Debugger is active!
+2025-03-17 00:11:41,480 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-17 00:12:28,913 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:12:28] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-17 00:12:28,917 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: hi
+2025-03-17 00:12:32,621 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-17 00:12:34,604 - root - INFO - Sending response: {'response': 'Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home. Please call us for more details.', 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'Emergency'}
+2025-03-17 00:12:34,607 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:12:34] "POST /submit_query HTTP/1.1" 200 -
+2025-03-17 00:12:35,170 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:12:35] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-17 00:12:35,175 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: i have back pain
+2025-03-17 00:12:37,463 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-17 00:12:39,461 - root - INFO - Sending response: {'response': 'Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home. Please call us for more details.', 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'Emergency'}
+2025-03-17 00:12:39,466 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:12:39] "POST /submit_query HTTP/1.1" 200 -
+2025-03-17 00:12:42,251 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:12:42] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-17 00:12:42,253 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: what the
+2025-03-17 00:12:44,585 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-17 00:12:46,595 - root - INFO - Sending response: {'response': 'Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home. Please call us for more details.', 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'Emergency'}
+2025-03-17 00:12:46,599 - werkzeug - INFO - 192.168.29.59 - - [17/Mar/2025 00:12:46] "POST /submit_query HTTP/1.1" 200 -

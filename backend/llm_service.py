@@ -68,7 +68,7 @@ def ai_clubbed(user_query, keyword_choices, template_choices):
     return [keyword_id, name, phone, template, summary]
 
 
-def generate_response(user_query, content, name=None, phone=None, template=None):
+def generate_response(user_query, content, name=None, phone=None, template=None, chat_summary=None):
     """
     Generate a response based on user query, content, and user information
     
@@ -78,6 +78,7 @@ def generate_response(user_query, content, name=None, phone=None, template=None)
         name (str, optional): User's name if available
         phone (str, optional): User's phone number if available
         template (str, optional): Template type to use for the response
+        chat_summary (str, optional): Summary of the chat conversation so far
     
     Returns:
         str: Generated response
@@ -89,12 +90,21 @@ def generate_response(user_query, content, name=None, phone=None, template=None)
     if is_only_personal_info(user_query):
         return f"Hello{name_slot}! Thank you for that information. How can we help you today?"
     
-    # Extract health conditions mentioned in the query
+    # Extract health conditions mentioned in the query and chat summary
     health_conditions = extract_health_conditions(user_query)
+    
+    # If we have a chat summary, use it to provide context
+    if chat_summary:
+        # Extract additional health conditions from the chat summary
+        summary_conditions = extract_health_conditions(chat_summary)
+        # Add any new conditions not already in the list
+        for condition in summary_conditions:
+            if condition not in health_conditions:
+                health_conditions.append(condition)
     
     # Define templates
     templates = {
-    "General": "Hello{name_slot}! {response_content} Our natural healing approach focuses on your body's self-healing ability.",
+    "General": "Hello{name_slot}! {response_content}",
     
     "Appointment": "Hello{name_slot}! {response_content} Would you like to schedule a consultation with our experts?",
     
@@ -125,7 +135,7 @@ def generate_response(user_query, content, name=None, phone=None, template=None)
     "Consultation": "Hello{name_slot}! {response_content} Would you prefer an online or in-person consultation?",
     
     "Follow-up": "Hello{name_slot}! {response_content} We recommend regular follow-ups for optimal results."
-}
+    }
     
     # Default to General if template not provided or invalid
     if not template or template not in templates:
@@ -134,7 +144,13 @@ def generate_response(user_query, content, name=None, phone=None, template=None)
     # Prepare response content based on template and health conditions
     if template == "Treatment" and health_conditions:
         treatments = get_treatments_for_conditions(health_conditions, content)
-        response_content = "We offer specialized treatments for your health concerns. "
+        
+        # Use chat summary to provide a more personalized response if available
+        if chat_summary:
+            response_content = "Based on our conversation, we offer specialized treatments for your health concerns. "
+        else:
+            response_content = "We offer specialized treatments for your health concerns. "
+        
         return templates[template].format(
             name_slot=name_slot,
             conditions=", ".join(health_conditions),
@@ -143,7 +159,7 @@ def generate_response(user_query, content, name=None, phone=None, template=None)
         )
     else:
         # For other templates, process the content to create a concise response
-        response_content = process_content_for_template(user_query, content, template)
+        response_content = process_content_for_template(user_query, content, template, chat_summary)
         return templates[template].format(
             name_slot=name_slot,
             response_content=response_content
@@ -206,8 +222,9 @@ def get_treatments_for_conditions(conditions, content):
     else:
         return f"{', '.join(treatments[:-1])}, and {treatments[-1]}"
 
-def process_content_for_template(query, content, template):
-    """Process the content based on the query and template type to create a concise response"""
+# Update the process_content_for_template function to use chat_summary
+def process_content_for_template(query, content, template, chat_summary=None):
+    """Process the content based on the query, template type, and chat summary to create a concise response"""
     if not content:
         return "Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home. Please call us for more details."
     
@@ -223,6 +240,22 @@ def process_content_for_template(query, content, template):
     }
     
     max_length = max_lengths.get(template, 100)
+    
+    # Incorporate chat summary if available
+    if chat_summary:
+        # Analyze the chat summary to determine if this is a follow-up question
+        if is_follow_up_question(query, chat_summary):
+            # Reference the previous conversation
+            content = f"As we were discussing, {content}"
+        
+        # Check if the user has shown interest in specific aspects
+        if "price" in chat_summary.lower() or "cost" in chat_summary.lower():
+            if template != "Pricing" and "price" not in content.lower() and "cost" not in content.lower():
+                content += " Our pricing is competitive and transparent."
+        
+        if "doctor" in chat_summary.lower() or "specialist" in chat_summary.lower():
+            if template != "Doctors" and "doctor" not in content.lower():
+                content += " Our specialists are highly qualified in natural healing practices."
     
     # Shorten content if needed
     if len(content) > max_length:
@@ -245,3 +278,49 @@ def process_content_for_template(query, content, template):
         content = f"{content} {template_endings[template]}"
     
     return content
+
+# Add a new helper function to determine if a question is a follow-up
+def is_follow_up_question(query, chat_summary):
+    """Determine if the current query is a follow-up to the previous conversation"""
+    # Look for phrases indicating a follow-up question
+    follow_up_indicators = [
+        "what about", "how about", "and", "also", "additionally",
+        "further", "more", "another", "else", "other"
+    ]
+    
+    # Check if the query contains any follow-up indicators
+    for indicator in follow_up_indicators:
+        if indicator in query.lower():
+            return True
+    
+    # Check if the query is very short (likely a follow-up)
+    if len(query.split()) <= 3 and not is_only_personal_info(query):
+        return True
+    
+    # Check if the query references something from the chat summary
+    # This is a simplified approach - in a real implementation, you might use
+    # more sophisticated NLP techniques
+    query_words = set(query.lower().split())
+    summary_words = set(chat_summary.lower().split())
+    common_words = query_words.intersection(summary_words)
+    
+    # If there are significant common words (excluding stopwords), it's likely a follow-up
+    stopwords = {"i", "me", "my", "myself", "we", "our", "ours", "ourselves", 
+                "you", "your", "yours", "yourself", "yourselves", "he", "him", 
+                "his", "himself", "she", "her", "hers", "herself", "it", "its", 
+                "itself", "they", "them", "their", "theirs", "themselves", 
+                "what", "which", "who", "whom", "this", "that", "these", "those", 
+                "am", "is", "are", "was", "were", "be", "been", "being", "have", 
+                "has", "had", "having", "do", "does", "did", "doing", "a", "an", 
+                "the", "and", "but", "if", "or", "because", "as", "until", "while", 
+                "of", "at", "by", "for", "with", "about", "against", "between", 
+                "into", "through", "during", "before", "after", "above", "below", 
+                "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", 
+                "again", "further", "then", "once", "here", "there", "when", "where", 
+                "why", "how", "all", "any", "both", "each", "few", "more", "most", 
+                "other", "some", "such", "no", "nor", "not", "only", "own", "same", 
+                "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", 
+                "should", "now"}
+    
+    meaningful_common_words = common_words - stopwords
+    return len(meaningful_common_words) >= 2

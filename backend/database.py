@@ -2,6 +2,8 @@ import sqlite3
 import asyncpg
 import logging
 from config import NEON_DB_USER, NEON_DB_PASSWORD, NEON_DB_HOST, NEON_DB_PORT, NEON_DB_NAME, SQLITE_DB_PATH
+from functools import lru_cache
+
 
 # PostgreSQL (Neon) Connection
 async def connect_to_neon():
@@ -154,8 +156,9 @@ async def update_user_info(session_id, user_info):
         logging.error(f"Error updating user info: {e}")
     finally:
         await conn.close()
-
+        
 # SQLite Content Database Functions
+@lru_cache(maxsize=1)  # Cache only the most recent result
 def fetch_keywords_data():
     conn = sqlite3.connect(SQLITE_DB_PATH)
     cursor = conn.cursor()

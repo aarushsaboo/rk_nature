@@ -53,7 +53,7 @@ async def process_query(session_id, user_query):
                     "Testimonials", "Doctors", "Consultation", "Follow-up"]
     
     # Call the combined AI function
-    keyword_id, name, phone, template, new_summary = ai_clubbed(user_query, keyword_options, template_options)
+    keyword_id, name, phone, template, summary = ai_clubbed(user_query, keyword_options, template_options)
     
     # Use existing values if new ones aren't found
     keyword_id = keyword_id if keyword_id is not None else existing_keyword_id
@@ -74,10 +74,10 @@ async def process_query(session_id, user_query):
     content = get_content_by_id(keyword_id) if keyword_id else ""
     
     # Update chat summary
-    await update_summary(session_id, new_summary)
+    await update_summary(session_id, summary)
     
-    # Generate response
-    answer = generate_response(user_query, content, name, template)
+    # Generate response - pass new_summary to generate_response
+    answer = generate_response(user_query, content, name, template, summary)
     
     # Log the conversation
     new_log_entry = f"User: {user_query} | Bot: {answer}"
@@ -90,12 +90,12 @@ async def process_query(session_id, user_query):
     final_answer = answer
     
     # Only ask for missing info if we haven't stored it already
-    if name is None and phone is None:
-        final_answer += "\n\nCan you share your name and number to help us better?"
-    elif name is None:
-        final_answer += "\n\nCan you share your name to help us better?"
-    elif phone is None:
-        final_answer += "\n\nCan you share your number to help us better?"
+    # if name is None and phone is None:
+    #     final_answer += "\n\nCan you share your name and number to help us better?"
+    # elif name is None:
+    #     final_answer += "\n\nCan you share your name to help us better?"
+    # elif phone is None:
+    #     final_answer += "\n\nCan you share your number to help us better?"
     
     response_data = {
     "response": final_answer, 
