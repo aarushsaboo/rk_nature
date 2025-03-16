@@ -46,11 +46,28 @@ async def process_query(session_id, user_query):
     # Fetch keyword options for AI prompt
     data_dict = fetch_keywords_data()
     keyword_options = [f"ID: {id} - Keyword: {info['keyword']}" for id, info in data_dict.items()]
+    # 'ID: 1 - Keyword: Information about company RK Nature Cure Home, its founders, vision, mission etc', 'ID: 2 - Keyword: Select this for information about the Treatments , Therapies and Facilities provided by RK Nature ', 'ID: 3 - Keyword: Select this for information about the details related to accomodation, rates, charges, price of different services at RK Nature'
     
     # Define template options
-    template_options = ["General", "Appointment", "Treatment", "Pricing", "Location", "Hours", 
-                    "Insurance", "Wellness", "FirstVisit", "Diet", "Covid", "Emergency", 
-                    "Testimonials", "Doctors", "Consultation", "Follow-up"]
+    template_options = [
+    "General", "Hello", "Introduction", "AboutUs", 
+    "Appointment", "BookingProcess", "FirstVisitInfo", 
+    "Treatment", "TherapyOptions", "BackPain", "JointPain", "Stress", "Diabetes", 
+    "Pricing", "Packages", "Insurance",
+    "Location", "ContactInfo", "Directions", 
+    "Hours", "OnlineServices", "Accommodation",
+    "Wellness", "YogaPrograms", "DetoxPrograms", 
+    "FirstVisit", 
+    "Diet", "DietaryGuidance", 
+    "Covid", "SafetyProtocols", 
+    "Emergency", 
+    "Testimonials", 
+    "Doctors", 
+    "Consultation", 
+    "Follow-up", "HomeRemedies", 
+    "TreatmentDuration", "ShortStay",
+    "HealthIssueGeneral"
+]
     
     # Call the combined AI function
     keyword_id, name, phone, template, summary = ai_clubbed(user_query, keyword_options, template_options)

@@ -4,15 +4,15 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from config import GOOGLE_API_KEY, LLM_MODEL
 
 llm = ChatGoogleGenerativeAI(model=LLM_MODEL, google_api_key=GOOGLE_API_KEY)
-
 def ai_clubbed(user_query, keyword_choices, template_choices):
     # Combine prompts from the original functions to create a comprehensive batch request
     prompt = (
         f"Analyze this user query carefully: '{user_query}'\n\n"
         
-        # From match_query_to_keyword function
-        f"Task 1: Based on the following user query, choose the most suitable keyword ID from this list: {', '.join(keyword_choices)}.\n"
-        f"If no suitable keyword ID is found, respond with 'None'.\n\n"
+        # Modified to ensure one of the provided keyword IDs is always chosen
+        f"Task 1: Choose the most suitable keyword ID from this list: {', '.join(keyword_choices)}.\n"
+        f"You MUST select one of the provided keyword IDs even if the match is not perfect. "
+        f"Choose the best available option.\n\n"
         
         # From extract_name function
         f"Task 2: Extract the user's name from this query if provided. "
@@ -32,7 +32,7 @@ def ai_clubbed(user_query, keyword_choices, template_choices):
         f"where [name], [phone], and [product] are extracted from the query or 'Unknown' if not found.\n\n"
         
         f"Format your response exactly like this:\n"
-        f"Keyword ID: [ID or None]\n"
+        f"Keyword ID: [ID - must be 1, 2, or 3]\n"
         f"Name: [Name or Unknown]\n"
         f"Phone: [Phone or Unknown]\n"
         f"Template: [Template or Default]\n"
@@ -41,10 +41,17 @@ def ai_clubbed(user_query, keyword_choices, template_choices):
     
     response = llm.invoke(prompt).content
     
-    # Extract keyword ID
-    keyword_match = re.search(r'Keyword ID: (.+)', response)
-    keyword_id_str = keyword_match.group(1).strip() if keyword_match else "None"
-    keyword_id = int(keyword_id_str) if keyword_id_str.isdigit() else None
+    # Extract keyword ID with fallback to ID 1 if extraction fails
+    keyword_match = re.search(r'Keyword ID: (\d+)', response)
+    if keyword_match:
+        keyword_id_str = keyword_match.group(1).strip()
+        keyword_id = int(keyword_id_str) if keyword_id_str.isdigit() else 1
+    else:
+        keyword_id = 2  # Default to first keyword if extraction fails
+    
+    # Ensure keyword_id is valid (1, 2, or 3)
+    if keyword_id not in [1, 2, 3]:
+        keyword_id = 2
     
     # Extract name
     name_match = re.search(r'Name: (.+)', response)
@@ -64,9 +71,10 @@ def ai_clubbed(user_query, keyword_choices, template_choices):
     # Extract summary
     summary_match = re.search(r'Summary: (.+)', response, re.DOTALL)
     summary = summary_match.group(1).strip() if summary_match else ""
+
+    logging.info(f"AI Clubbed Response: Keyword ID: {keyword_id}, Name: {name}, Phone: {phone}, Template: {template}, Summary: {summary}")
     
     return [keyword_id, name, phone, template, summary]
-
 
 def generate_response(user_query, content, name=None, phone=None, template=None, chat_summary=None):
     """
@@ -86,241 +94,89 @@ def generate_response(user_query, content, name=None, phone=None, template=None,
     # Prepare name for greeting
     name_slot = f" {name}" if name else ""
     
-    # Check if message is only providing personal info
-    if is_only_personal_info(user_query):
-        return f"Hello{name_slot}! Thank you for that information. How can we help you today?"
-    
-    # Extract health conditions mentioned in the query and chat summary
-    health_conditions = extract_health_conditions(user_query)
-    
-    # If we have a chat summary, use it to provide context
-    if chat_summary:
-        # Extract additional health conditions from the chat summary
-        summary_conditions = extract_health_conditions(chat_summary)
-        # Add any new conditions not already in the list
-        for condition in summary_conditions:
-            if condition not in health_conditions:
-                health_conditions.append(condition)
-    
-    # Define templates
+    # Define templates for various user queries and intents
     templates = {
-    "General": "Hello{name_slot}! {response_content}",
-    
-    "Appointment": "Hello{name_slot}! {response_content} Would you like to schedule a consultation with our experts?",
-    
-    "Treatment": "Hello{name_slot}! For {conditions}, we recommend {treatments}. {response_content}",
-    
-    "Pricing": "Hello{name_slot}! {response_content} Would you like details on our wellness packages?",
-    
-    "Location": "Hello{name_slot}! {response_content} Find us at Krishna Layout, Ganapathy, Coimbatore - 641006.",
-    
-    "Hours": "Hello{name_slot}! {response_content} We're open daily from 6 AM to 8 PM.",
-    
-    "Insurance": "Hello{name_slot}! {response_content} We provide detailed receipts for insurance claims.",
-    
-    "Wellness": "Hello{name_slot}! {response_content} Our holistic approach addresses both symptoms and root causes.",
-    
-    "FirstVisit": "Hello{name_slot}! {response_content} Your first visit includes a thorough assessment and personalized plan.",
-    
-    "Diet": "Hello{name_slot}! {response_content} Nutrition is central to our healing approach. Would you like dietary guidance?",
-    
-    "Covid": "Hello{name_slot}! {response_content} We follow all safety protocols for your wellbeing.",
-    
-    "Emergency": "Hello{name_slot}! For emergencies, please call us at +91 88700-66622 right away.",
-    
-    "Testimonials": "Hello{name_slot}! {response_content} Our success stories reflect our commitment to natural healing.",
-    
-    "Doctors": "Hello{name_slot}! {response_content} Our certified naturopaths have years of specialized training.",
-    
-    "Consultation": "Hello{name_slot}! {response_content} Would you prefer an online or in-person consultation?",
-    
-    "Follow-up": "Hello{name_slot}! {response_content} We recommend regular follow-ups for optimal results."
+        # Basic greeting templates
+        "Hello": "Hello{name_slot}! Welcome to RK Nature Cure Home. How can we assist you with your wellness journey today? {content}",
+        
+        "Introduction": "Greetings{name_slot}! RK Nature Cure Home is a premier naturopathy center in Coimbatore. {content} Would you like to know more about our healing approach?",
+        
+        "AboutUs": "Welcome to RK Nature Cure Home{name_slot}! {content} Our center focuses on natural healing through scientifically-backed naturopathic methods.",
+        
+        # Health concern templates
+        "HealthIssueGeneral": "We understand your health concerns{name_slot}. {content} At RK Nature Cure, we offer holistic solutions to address both symptoms and root causes.",
+        
+        "BackPain": "I'm sorry to hear about your back pain{name_slot}. {content} Our specialized treatments including hydrotherapy, therapeutic massage, and yoga have helped many find relief. Would you like to know more?",
+        
+        "JointPain": "Joint pain can be quite debilitating{name_slot}. {content} Our mud therapy, physiotherapy sessions, and specialized exercises are designed to provide relief and improve mobility.",
+        
+        "Stress": "Dealing with stress requires a holistic approach{name_slot}. {content} Our stress management programs combine meditation, pranayama, and natural therapies to restore balance.",
+        
+        "Diabetes": "For managing diabetes naturally{name_slot}, {content} our approach includes customized diet plans, therapeutic exercises, and specialized naturopathic treatments.",
+        
+        # Location and contact templates
+        "Location": "You can find us at Krishna Layout, Ganapathy, Coimbatore - 641006{name_slot}. {content} We're conveniently located with ample parking facilities.",
+        
+        "ContactInfo": "You can reach us at +91 88700-66622{name_slot}. {content} Our reception is open from 6 AM to 8 PM daily to answer your queries.",
+        
+        "Directions": "Here's how to reach RK Nature Cure Home{name_slot}: {content} If you need more specific directions, please let us know your starting point.",
+        
+        # Service inquiry templates
+        "TherapyOptions": "We offer a wide range of therapies{name_slot}. {content} Our treatments are personalized based on your specific health needs and constitution.",
+        
+        "OnlineServices": "Yes{name_slot}, we do offer online consultations! {content} Many of our dietary guidance and yoga sessions can be conducted virtually. Would you like to book an online appointment?",
+        
+        "Accommodation": "Regarding accommodation{name_slot}, {content} we offer comfortable stay options for patients undergoing extended treatment programs. Would you like details about our room types?",
+        
+        # Appointment and booking templates
+        "Appointment": "We'd be happy to schedule an appointment for you{name_slot}. {content} Would you prefer a morning or evening slot?",
+        
+        "BookingProcess": "Booking a consultation is simple{name_slot}. {content} You can call us at +91 88700-66622 or reply with your preferred date and time, and we'll check availability.",
+        
+        "FirstVisitInfo": "For your first visit{name_slot}, {content} please bring any recent medical reports you have. Your initial consultation will take about 45-60 minutes.",
+        
+        # Pricing and payment templates
+        "Pricing": "Regarding our pricing{name_slot}, {content} our treatment packages are customized based on your needs. We offer flexible payment options including card payments and installments.",
+        
+        "Insurance": "About insurance{name_slot}, {content} we provide detailed receipts and documentation that can be submitted for reimbursement to insurance providers that cover alternative treatments.",
+        
+        "Packages": "Our wellness packages{name_slot} are designed for comprehensive care. {content} Would you like information about our popular 7-day or 14-day residential programs?",
+        
+        # Treatment duration templates
+        "TreatmentDuration": "The duration of treatment{name_slot} varies based on your condition. {content} Typically, we recommend a minimum of 7-14 days for noticeable improvement in chronic conditions.",
+        
+        "ShortStay": "If you're looking for a short rejuvenation program{name_slot}, {content} our weekend wellness retreats might be perfect for you. These focus on stress relief and energy restoration.",
+        
+        # Follow-up templates
+        "FollowUp": "Follow-up care is essential for lasting results{name_slot}. {content} We recommend periodic check-ins to adjust your treatment plan as you progress.",
+        
+        "HomeRemedies": "Here are some home-based practices you can follow{name_slot}: {content} These complement your in-center treatments and accelerate your healing process.",
+        
+        # Specialty templates
+        "YogaPrograms": "Our yoga programs{name_slot} are designed for therapeutic benefits. {content} We offer both group and individual sessions tailored to your physical condition.",
+        
+        "DietaryGuidance": "Nutrition plays a crucial role in healing{name_slot}. {content} Our dietary experts create personalized meal plans based on your body constitution and health goals.",
+        
+        "DetoxPrograms": "Our specialized detox programs{name_slot} help eliminate toxins and rejuvenate your system. {content} These are particularly beneficial for those with chronic conditions or lifestyle disorders.",
+        
+        # Reassurance templates
+        "SafetyProtocols": "Your safety is our priority{name_slot}. {content} We follow strict hygiene protocols and all our therapists are certified professionals.",
+        
+        "CovidMeasures": "Regarding COVID safety{name_slot}, {content} we maintain thorough sanitization, temperature checks, and appropriate distancing during all treatments.",
+        
+        # Fallback templates
+        "General": "Hello{name_slot}! {content} How else can we assist you with your wellness needs?",
+        
+        "Emergency": "For emergencies{name_slot}, please call us immediately at +91 88700-66622. {content} Our medical team is available to provide guidance.",
+        
+        "Testimonials": "Our patients have experienced remarkable improvements{name_slot}. {content} Would you like to hear some success stories related to your condition?"
     }
     
     # Default to General if template not provided or invalid
     if not template or template not in templates:
         template = "General"
     
-    # Prepare response content based on template and health conditions
-    if template == "Treatment" and health_conditions:
-        treatments = get_treatments_for_conditions(health_conditions, content)
-        
-        # Use chat summary to provide a more personalized response if available
-        if chat_summary:
-            response_content = "Based on our conversation, we offer specialized treatments for your health concerns. "
-        else:
-            response_content = "We offer specialized treatments for your health concerns. "
-        
-        return templates[template].format(
-            name_slot=name_slot,
-            conditions=", ".join(health_conditions),
-            treatments=treatments,
-            response_content=response_content
-        )
-    else:
-        # For other templates, process the content to create a concise response
-        response_content = process_content_for_template(user_query, content, template, chat_summary)
-        return templates[template].format(
-            name_slot=name_slot,
-            response_content=response_content
-        )
-
-
-# util functions
-def is_only_personal_info(query):
-    """Check if the query only contains personal information like name or number"""
-    # Simple pattern matching for common name/number patterns
-    name_pattern = r'^[A-Z][a-z]+ [A-Z][a-z]+$'
-    phone_pattern = r'^\d{10}$|^\+\d{1,3}\d{10}$'
+    # Format response using the selected template
+    response = templates[template].format(name_slot=name_slot, content=content)
     
-    query = query.strip()
-    return bool(re.match(name_pattern, query) or re.match(phone_pattern, query))
-
-def extract_health_conditions(query):
-    """Extract mentioned health conditions from the query"""
-    common_conditions = [
-        "back pain", "headache", "stress", "anxiety", "weight", "kidney", 
-        "blood pressure", "asthma", "digestion", "sleep", "joint pain"
-    ]
-    
-    mentioned = []
-    for condition in common_conditions:
-        if condition in query.lower():
-            mentioned.append(condition)
-    
-    return mentioned
-
-def get_treatments_for_conditions(conditions, content):
-    """Extract relevant treatments for the mentioned health conditions"""
-    if not conditions or not content:
-        return "various holistic treatments"
-    
-    # Simple extraction of treatments from the content
-    # In a real implementation, this could be more sophisticated
-    treatments = []
-    
-    if "back pain" in conditions and "yoga" in content.lower():
-        treatments.append("yoga therapy")
-    if any(c in conditions for c in ["stress", "anxiety"]) and "meditation" in content.lower():
-        treatments.append("meditation sessions")
-    if "weight" in conditions and "diet" in content.lower():
-        treatments.append("personalized diet plans")
-    if any(c in conditions for c in ["joint pain", "back pain"]) and "massage" in content.lower():
-        treatments.append("therapeutic massage")
-    if any(c in conditions for c in ["digestion", "kidney"]) and "detox" in content.lower():
-        treatments.append("detoxification treatments")
-    
-    # Default treatments if nothing specific was found
-    if not treatments:
-        treatments = ["hydrotherapy", "naturopathy consultations", "holistic wellness programs"]
-    
-    # Format the list of treatments in a grammatically correct way
-    if len(treatments) == 1:
-        return treatments[0]
-    elif len(treatments) == 2:
-        return f"{treatments[0]} and {treatments[1]}"
-    else:
-        return f"{', '.join(treatments[:-1])}, and {treatments[-1]}"
-
-# Update the process_content_for_template function to use chat_summary
-def process_content_for_template(query, content, template, chat_summary=None):
-    """Process the content based on the query, template type, and chat summary to create a concise response"""
-    if not content:
-        return "Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home. Please call us for more details."
-    
-    # Length constraints based on template type
-    max_lengths = {
-        "General": 100,
-        "Appointment": 80,
-        "Treatment": 120,
-        "Pricing": 90,
-        "Location": 70,
-        "Hours": 60,
-        "Insurance": 100
-    }
-    
-    max_length = max_lengths.get(template, 100)
-    
-    # Incorporate chat summary if available
-    if chat_summary:
-        # Analyze the chat summary to determine if this is a follow-up question
-        if is_follow_up_question(query, chat_summary):
-            # Reference the previous conversation
-            content = f"As we were discussing, {content}"
-        
-        # Check if the user has shown interest in specific aspects
-        if "price" in chat_summary.lower() or "cost" in chat_summary.lower():
-            if template != "Pricing" and "price" not in content.lower() and "cost" not in content.lower():
-                content += " Our pricing is competitive and transparent."
-        
-        if "doctor" in chat_summary.lower() or "specialist" in chat_summary.lower():
-            if template != "Doctors" and "doctor" not in content.lower():
-                content += " Our specialists are highly qualified in natural healing practices."
-    
-    # Shorten content if needed
-    if len(content) > max_length:
-        # Find a good cut-off point at the end of a sentence
-        cut_point = content[:max_length].rfind('.')
-        if cut_point > 0:
-            content = content[:cut_point + 1]
-        else:
-            content = content[:max_length] + "..."
-    
-    # Add template-specific endings
-    template_endings = {
-        "Appointment": "Would you like to book a time?",
-        "Pricing": "Our staff can provide more details on request.",
-        "Location": "We're conveniently located for your visit.",
-        "Hours": "Does our schedule work for you?",
-    }
-    
-    if template in template_endings and not content.endswith(template_endings[template]):
-        content = f"{content} {template_endings[template]}"
-    
-    return content
-
-# Add a new helper function to determine if a question is a follow-up
-def is_follow_up_question(query, chat_summary):
-    """Determine if the current query is a follow-up to the previous conversation"""
-    # Look for phrases indicating a follow-up question
-    follow_up_indicators = [
-        "what about", "how about", "and", "also", "additionally",
-        "further", "more", "another", "else", "other"
-    ]
-    
-    # Check if the query contains any follow-up indicators
-    for indicator in follow_up_indicators:
-        if indicator in query.lower():
-            return True
-    
-    # Check if the query is very short (likely a follow-up)
-    if len(query.split()) <= 3 and not is_only_personal_info(query):
-        return True
-    
-    # Check if the query references something from the chat summary
-    # This is a simplified approach - in a real implementation, you might use
-    # more sophisticated NLP techniques
-    query_words = set(query.lower().split())
-    summary_words = set(chat_summary.lower().split())
-    common_words = query_words.intersection(summary_words)
-    
-    # If there are significant common words (excluding stopwords), it's likely a follow-up
-    stopwords = {"i", "me", "my", "myself", "we", "our", "ours", "ourselves", 
-                "you", "your", "yours", "yourself", "yourselves", "he", "him", 
-                "his", "himself", "she", "her", "hers", "herself", "it", "its", 
-                "itself", "they", "them", "their", "theirs", "themselves", 
-                "what", "which", "who", "whom", "this", "that", "these", "those", 
-                "am", "is", "are", "was", "were", "be", "been", "being", "have", 
-                "has", "had", "having", "do", "does", "did", "doing", "a", "an", 
-                "the", "and", "but", "if", "or", "because", "as", "until", "while", 
-                "of", "at", "by", "for", "with", "about", "against", "between", 
-                "into", "through", "during", "before", "after", "above", "below", 
-                "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", 
-                "again", "further", "then", "once", "here", "there", "when", "where", 
-                "why", "how", "all", "any", "both", "each", "few", "more", "most", 
-                "other", "some", "such", "no", "nor", "not", "only", "own", "same", 
-                "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", 
-                "should", "now"}
-    
-    meaningful_common_words = common_words - stopwords
-    return len(meaningful_common_words) >= 2
+    return response
