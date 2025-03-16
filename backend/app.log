@@ -46,3 +46,6 @@
 2025-03-16 23:13:02,711 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
 2025-03-16 23:13:02,712 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
 2025-03-16 23:13:02,713 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:13:05,354 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:13:06,523 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:13:06,526 - werkzeug - INFO -  * Debugger PIN: 794-043-953
