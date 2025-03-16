@@ -75,6 +75,7 @@ async def process_query(session_id, user_query):
     # Use existing values if new ones aren't found
     keyword_id = keyword_id if keyword_id is not None else existing_keyword_id
     name = name if name is not None else existing_name
+    logging.info(f"Name: {name}")
     phone = phone if phone is not None else existing_phone
     template = template if template is not None else (existing_template or "General")
     
@@ -107,12 +108,12 @@ async def process_query(session_id, user_query):
     final_answer = answer
     
     # Only ask for missing info if we haven't stored it already
-    # if name is None and phone is None:
-    #     final_answer += "\n\nCan you share your name and number to help us better?"
-    # elif name is None:
-    #     final_answer += "\n\nCan you share your name to help us better?"
-    # elif phone is None:
-    #     final_answer += "\n\nCan you share your number to help us better?"
+    if name is None and phone is None:
+        final_answer += "\n\nCan you share your name and number to help us better?"
+    elif name is None:
+        final_answer += "\n\nCan you share your name to help us better?"
+    elif phone is None:
+        final_answer += "\n\nCan you share your number to help us better?"
     
     response_data = {
     "response": final_answer, 

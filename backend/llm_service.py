@@ -91,92 +91,114 @@ def generate_response(user_query, content, name=None, phone=None, template=None,
     Returns:
         str: Generated response
     """
-    # Prepare name for greeting
+    # Prepare name for greeting if available
     name_slot = f" {name}" if name else ""
     
-    # Define templates for various user queries and intents
-    templates = {
-        # Basic greeting templates
-        "Hello": "Hello{name_slot}! Welcome to RK Nature Cure Home. How can we assist you with your wellness journey today? {content}",
+    # Include chat summary in context if available
+    context = ""
+    if chat_summary:
+        context = f"Chat history summary: {chat_summary}\n"
+    
+    # Basic assistant prompt
+    base_prompt = (
+        f"You are a friendly receptionist at R K Nature Cure Home, a naturopathy hospital. "
+        f"We are asking user to provide name and number through other function, incase they reply with name or number, just say thank you and ask how can we help you. "
+        f"Answer the user's question in a warm, concise tone (max 2 lines total, including greeting), using this info: '{content}'. "
+        f"Keep it extremely concise and avoid technical terms. If the info isn't enough, briefly suggest contacting us. User query: '{user_query}'"
+
+        f" Proactively list the therapies offered if the user query is about a specific health issue. "
+    )
+    
+    # Template-specific guidance based on template type
+    template_guidance = {
+        "Hello": "Provide a friendly greeting and welcome them to RK Nature Cure Home.",
         
-        "Introduction": "Greetings{name_slot}! RK Nature Cure Home is a premier naturopathy center in Coimbatore. {content} Would you like to know more about our healing approach?",
+        "Introduction": "Briefly introduce RK Nature Cure Home as a premier naturopathy center in Coimbatore.",
         
-        "AboutUs": "Welcome to RK Nature Cure Home{name_slot}! {content} Our center focuses on natural healing through scientifically-backed naturopathic methods.",
+        "AboutUs": "Focus on our center's natural healing approach using scientifically-backed naturopathic methods.",
         
-        # Health concern templates
-        "HealthIssueGeneral": "We understand your health concerns{name_slot}. {content} At RK Nature Cure, we offer holistic solutions to address both symptoms and root causes.",
+        "HealthIssueGeneral": "Acknowledge their health concerns and mention all the holistic solutions offered.",
         
-        "BackPain": "I'm sorry to hear about your back pain{name_slot}. {content} Our specialized treatments including hydrotherapy, therapeutic massage, and yoga have helped many find relief. Would you like to know more?",
+        "BackPain": "Express sympathy for their back pain and mention all the different therapies offered.",
         
-        "JointPain": "Joint pain can be quite debilitating{name_slot}. {content} Our mud therapy, physiotherapy sessions, and specialized exercises are designed to provide relief and improve mobility.",
+        "JointPain": "Acknowledge that joint pain can be debilitating and mention our mud therapy and physiotherapy.",
         
-        "Stress": "Dealing with stress requires a holistic approach{name_slot}. {content} Our stress management programs combine meditation, pranayama, and natural therapies to restore balance.",
+        "Stress": "Emphasize our holistic approach to stress management including meditation and pranayama.",
         
-        "Diabetes": "For managing diabetes naturally{name_slot}, {content} our approach includes customized diet plans, therapeutic exercises, and specialized naturopathic treatments.",
+        "Diabetes": "Mention our natural approach to diabetes management with diet plans and exercises.",
         
-        # Location and contact templates
-        "Location": "You can find us at Krishna Layout, Ganapathy, Coimbatore - 641006{name_slot}. {content} We're conveniently located with ample parking facilities.",
+        "Location": "Share our address: Krishna Layout, Ganapathy, Coimbatore - 641006.",
         
-        "ContactInfo": "You can reach us at +91 88700-66622{name_slot}. {content} Our reception is open from 6 AM to 8 PM daily to answer your queries.",
+        "ContactInfo": "Provide our contact number +91 88700-66622 and mention reception hours (6 AM to 8 PM).",
         
-        "Directions": "Here's how to reach RK Nature Cure Home{name_slot}: {content} If you need more specific directions, please let us know your starting point.",
+        "Directions": "Offer simple directions to our facility.",
         
-        # Service inquiry templates
-        "TherapyOptions": "We offer a wide range of therapies{name_slot}. {content} Our treatments are personalized based on your specific health needs and constitution.",
+        "TherapyOptions": "Mention we offer personalized treatments based on specific health needs.",
         
-        "OnlineServices": "Yes{name_slot}, we do offer online consultations! {content} Many of our dietary guidance and yoga sessions can be conducted virtually. Would you like to book an online appointment?",
+        "OnlineServices": "Confirm we offer online consultations for dietary guidance and yoga sessions.",
         
-        "Accommodation": "Regarding accommodation{name_slot}, {content} we offer comfortable stay options for patients undergoing extended treatment programs. Would you like details about our room types?",
+        "Accommodation": "Mention our comfortable stay options for extended treatment programs.",
         
-        # Appointment and booking templates
-        "Appointment": "We'd be happy to schedule an appointment for you{name_slot}. {content} Would you prefer a morning or evening slot?",
+        "Appointment": "Offer to schedule an appointment and ask for preferred timing.",
         
-        "BookingProcess": "Booking a consultation is simple{name_slot}. {content} You can call us at +91 88700-66622 or reply with your preferred date and time, and we'll check availability.",
+        "BookingProcess": "Explain our simple booking process via phone (+91 88700-66622).",
         
-        "FirstVisitInfo": "For your first visit{name_slot}, {content} please bring any recent medical reports you have. Your initial consultation will take about 45-60 minutes.",
+        "FirstVisitInfo": "Advise them to bring medical reports and expect a 45-60 minute consultation.",
         
-        # Pricing and payment templates
-        "Pricing": "Regarding our pricing{name_slot}, {content} our treatment packages are customized based on your needs. We offer flexible payment options including card payments and installments.",
+        "Pricing": "Mention our customized packages and flexible payment options.",
         
-        "Insurance": "About insurance{name_slot}, {content} we provide detailed receipts and documentation that can be submitted for reimbursement to insurance providers that cover alternative treatments.",
+        "Insurance": "Explain we provide documentation for insurance reimbursement claims.",
         
-        "Packages": "Our wellness packages{name_slot} are designed for comprehensive care. {content} Would you like information about our popular 7-day or 14-day residential programs?",
+        "Packages": "Briefly mention our 7-day and 14-day residential programs.",
         
-        # Treatment duration templates
-        "TreatmentDuration": "The duration of treatment{name_slot} varies based on your condition. {content} Typically, we recommend a minimum of 7-14 days for noticeable improvement in chronic conditions.",
+        "TreatmentDuration": "Explain treatment duration varies based on condition (typically 7-14 days minimum).",
         
-        "ShortStay": "If you're looking for a short rejuvenation program{name_slot}, {content} our weekend wellness retreats might be perfect for you. These focus on stress relief and energy restoration.",
+        "ShortStay": "Mention our weekend wellness retreats for short rejuvenation.",
         
-        # Follow-up templates
-        "FollowUp": "Follow-up care is essential for lasting results{name_slot}. {content} We recommend periodic check-ins to adjust your treatment plan as you progress.",
+        "Follow-up": "Emphasize the importance of follow-up care for lasting results.",
         
-        "HomeRemedies": "Here are some home-based practices you can follow{name_slot}: {content} These complement your in-center treatments and accelerate your healing process.",
+        "HomeRemedies": "Suggest some simple home practices that complement in-center treatments.",
         
-        # Specialty templates
-        "YogaPrograms": "Our yoga programs{name_slot} are designed for therapeutic benefits. {content} We offer both group and individual sessions tailored to your physical condition.",
+        "YogaPrograms": "Highlight our therapeutic yoga programs for various conditions.",
         
-        "DietaryGuidance": "Nutrition plays a crucial role in healing{name_slot}. {content} Our dietary experts create personalized meal plans based on your body constitution and health goals.",
+        "Diet": "Stress the importance of nutrition in healing and our personalized meal plans.",
         
-        "DetoxPrograms": "Our specialized detox programs{name_slot} help eliminate toxins and rejuvenate your system. {content} These are particularly beneficial for those with chronic conditions or lifestyle disorders.",
+        "DietaryGuidance": "Mention our approach combining ancient wisdom with modern nutritional science.",
         
-        # Reassurance templates
-        "SafetyProtocols": "Your safety is our priority{name_slot}. {content} We follow strict hygiene protocols and all our therapists are certified professionals.",
+        "DetoxPrograms": "Describe our detox programs for eliminating toxins and system rejuvenation.",
         
-        "CovidMeasures": "Regarding COVID safety{name_slot}, {content} we maintain thorough sanitization, temperature checks, and appropriate distancing during all treatments.",
+        "SafetyProtocols": "Reassure about our strict hygiene protocols and certified professionals.",
         
-        # Fallback templates
-        "General": "Hello{name_slot}! {content} How else can we assist you with your wellness needs?",
+        "Covid": "Explain our COVID safety measures including sanitization and distancing.",
         
-        "Emergency": "For emergencies{name_slot}, please call us immediately at +91 88700-66622. {content} Our medical team is available to provide guidance.",
+        "Hours": "Share our opening hours (6 AM to 8 PM) and treatment/consultation timings.",
         
-        "Testimonials": "Our patients have experienced remarkable improvements{name_slot}. {content} Would you like to hear some success stories related to your condition?"
+        "Doctors": "Mention our team of experienced naturopaths and wellness specialists.",
+        
+        "Consultation": "Describe our comprehensive consultations and offer online/in-person options.",
+        
+        "FirstVisit": "Explain what to expect during their first visit and assessment.",
+        
+        "Wellness": "Mention our five pillars approach: diet, exercise, stress management, rest, and positive thinking.",
+        
+        "Treatment": "Emphasize our natural, non-invasive treatment approach.",
+        
+        "Emergency": "Provide emergency contact information (+91 88700-66622) and mention medical team availability.",
+        
+        "Testimonials": "Mention patient success stories and improvements.",
+        
+        "General": "Provide a general helpful response and ask how else we can assist."
     }
     
     # Default to General if template not provided or invalid
-    if not template or template not in templates:
+    if not template or template not in template_guidance:
         template = "General"
     
-    # Format response using the selected template
-    response = templates[template].format(name_slot=name_slot, content=content)
+    # Create the final prompt with template-specific guidance
+    assistant_prompt = f"{base_prompt}\n\nSpecific guidance: {template_guidance[template]}"
     
-    return response
+    # In a real implementation, you would send this prompt to the AI service
+    
+    response = llm.invoke(assistant_prompt).content
+    
+    return response  
