@@ -107,7 +107,7 @@ def generate_response(user_query, content, name=None, phone=None, template=None,
         f"Answer the user's question in a warm, concise tone (max 2 lines total, including greeting), using this info: '{content}'. "
         f"Keep it extremely concise and avoid technical terms. If the info isn't enough, briefly suggest contacting us. User query: '{user_query}'"
 
-        f" Proactively list the therapies offered if the user query is about a specific health issue. "
+        f" Proactively list the therapies offered if the user query is about a specific health issue, and be sympathetic & conscious of the other person's pain. "
     )
     
     # Template-specific guidance based on template type
@@ -130,7 +130,9 @@ def generate_response(user_query, content, name=None, phone=None, template=None,
         
         "Location": "Share our address: Krishna Layout, Ganapathy, Coimbatore - 641006.",
         
-        "ContactInfo": "Provide our contact number +91 88700-66622 and mention reception hours (6 AM to 8 PM).",
+        "OurContactDetails": "Provide our contact number +91 88700-66622 and mention reception hours (6 AM to 8 PM).",
+
+        "YourContactDetails": f"Provided the {name} and {phone} are already collected, just say thank you and tell them you will contact them. If not, ask for further details.",
         
         "Directions": "Offer simple directions to our facility.",
         

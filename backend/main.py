@@ -54,7 +54,7 @@ async def process_query(session_id, user_query):
     "Appointment", "BookingProcess", "FirstVisitInfo", 
     "Treatment", "TherapyOptions", "BackPain", "JointPain", "Stress", "Diabetes", 
     "Pricing", "Packages", "Insurance",
-    "Location", "ContactInfo", "Directions", 
+    "Location", "OurContactDetails", "YourContactDetails", "Directions", 
     "Hours", "OnlineServices", "Accommodation",
     "Wellness", "YogaPrograms", "DetoxPrograms", 
     "FirstVisit", 
@@ -75,7 +75,7 @@ async def process_query(session_id, user_query):
     # Use existing values if new ones aren't found
     keyword_id = keyword_id if keyword_id is not None else existing_keyword_id
     name = name if name is not None else existing_name
-    logging.info(f"Name: {name}")
+    logging.info(f"Name: {name}, Phone number: {phone}")
     phone = phone if phone is not None else existing_phone
     template = template if template is not None else (existing_template or "General")
     
@@ -95,7 +95,7 @@ async def process_query(session_id, user_query):
     await update_summary(session_id, summary)
     
     # Generate response - pass new_summary to generate_response
-    answer = generate_response(user_query, content, name, template, summary)
+    answer = generate_response(user_query, content, name, phone, template, summary)
     
     # Log the conversation
     new_log_entry = f"User: {user_query} | Bot: {answer}"
