@@ -3,10 +3,19 @@ import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from config import DEBUG, HOST, PORT
-from database import log_chat, update_summary, get_chat_data, get_content_by_id
-from llm_service import match_query_to_keyword, extract_name, generate_response, generate_summary
+from database import log_chat, update_summary, get_chat_data, get_content_by_id, update_user_info
+from llm_service import generate_response, ai_clubbed
+from database import fetch_keywords_data, get_user_info
 
-logging.basicConfig(level=logging.INFO)
+# Set up logging to both file and console
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler()
+    ]
+)
 
 app = Flask(__name__)
 CORS(app)
@@ -27,29 +36,77 @@ def submit_query():
     return asyncio.run(process_query(session_id, user_query))
 
 async def process_query(session_id, user_query):
-    name = extract_name(user_query)  # ai call
-    matched_id = match_query_to_keyword(user_query) #ai call
-
-    content = get_content_by_id(matched_id) if matched_id else ""
-    initial_answer = generate_response(user_query, content, name)
-    new_log_entry = f"User: {user_query} | Bot: {initial_answer}"
-    await log_chat(session_id, new_log_entry)
-
-    chat_data = await get_chat_data(session_id)
-    existing_summary = chat_data['summary'] if chat_data else None
-
-    summary = generate_summary(existing_summary, new_log_entry) #ai call
-    await update_summary(session_id, summary)
-    final_answer = initial_answer
+    # Fetch existing user info from database (if any)
+    existing_info = await get_user_info(session_id)
+    existing_keyword_id = existing_info.get('keyword_id')
+    existing_name = existing_info.get('name')
+    existing_phone = existing_info.get('phone')
+    existing_template = existing_info.get('template')
     
-    if "User: Unknown" in summary and "Phone: Unknown" in summary:
+    # Fetch keyword options for AI prompt
+    data_dict = fetch_keywords_data()
+    keyword_options = [f"ID: {id} - Keyword: {info['keyword']}" for id, info in data_dict.items()]
+    
+    # Define template options
+    template_options = ["General", "Appointment", "Treatment", "Pricing", "Location", "Hours", 
+                    "Insurance", "Wellness", "FirstVisit", "Diet", "Covid", "Emergency", 
+                    "Testimonials", "Doctors", "Consultation", "Follow-up"]
+    
+    # Call the combined AI function
+    keyword_id, name, phone, template, new_summary = ai_clubbed(user_query, keyword_options, template_options)
+    
+    # Use existing values if new ones aren't found
+    keyword_id = keyword_id if keyword_id is not None else existing_keyword_id
+    name = name if name is not None else existing_name
+    phone = phone if phone is not None else existing_phone
+    template = template if template is not None else (existing_template or "General")
+    
+    # Store or update user info in database
+    new_user_info = {
+        'keyword_id': keyword_id,
+        'name': name,
+        'phone': phone,
+        'template': template
+    }
+    await update_user_info(session_id, new_user_info)
+    
+    # Get content based on matched keyword
+    content = get_content_by_id(keyword_id) if keyword_id else ""
+    
+    # Update chat summary
+    await update_summary(session_id, new_summary)
+    
+    # Generate response
+    answer = generate_response(user_query, content, name, template)
+    
+    # Log the conversation
+    new_log_entry = f"User: {user_query} | Bot: {answer}"
+    await log_chat(session_id, new_log_entry)
+    
+    # Get chat history
+    chat_data = await get_chat_data(session_id)
+    
+    # Add prompts for missing information if needed
+    final_answer = answer
+    
+    # Only ask for missing info if we haven't stored it already
+    if name is None and phone is None:
         final_answer += "\n\nCan you share your name and number to help us better?"
-    elif "User: Unknown" in summary:
+    elif name is None:
         final_answer += "\n\nCan you share your name to help us better?"
-    elif "Phone: Unknown" in summary:
+    elif phone is None:
         final_answer += "\n\nCan you share your number to help us better?"
     
-    return jsonify({"response": final_answer, "SessionId": session_id})
+    response_data = {
+    "response": final_answer, 
+    "SessionId": session_id,
+    "name": name,
+    "phone": phone,
+    "keyword_id": keyword_id,
+    "template": template
+    }
+    logging.info(f"Sending response: {response_data}")
+    return jsonify(response_data)
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)

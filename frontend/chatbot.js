@@ -3,7 +3,7 @@
 const ChatbotWidget = {
   // Configuration and state
   config: {
-    apiUrl: "https://rk-nature-backend.onrender.com/submit_query",
+    apiUrl: "http://192.168.29.59:8000/submit_query",
     sessionId: null,
     isMobile: false,
   },

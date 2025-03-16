@@ -1,0 +1,48 @@
+2025-03-16 23:00:09,113 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:00:09,116 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:00:25,905 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:00:25,905 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:00:55,619 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.29.59:8000
+2025-03-16 23:00:55,619 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-16 23:00:55,626 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:00:56,828 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:00:56,831 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:01:02,215 - werkzeug - INFO - 192.168.29.59 - - [16/Mar/2025 23:01:02] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-16 23:01:02,218 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: hi
+2025-03-16 23:01:05,916 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-16 23:01:07,845 - root - INFO - Sending response: {'response': 'Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home. Please call us for more details.\n\nCan you share your name and number to help us better?', 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'General'}
+2025-03-16 23:01:07,848 - werkzeug - INFO - 192.168.29.59 - - [16/Mar/2025 23:01:07] "POST /submit_query HTTP/1.1" 200 -
+2025-03-16 23:01:17,672 - werkzeug - INFO - 127.0.0.1 - - [16/Mar/2025 23:01:17] "[33mGET / HTTP/1.1[0m" 404 -
+2025-03-16 23:01:17,731 - werkzeug - INFO - 127.0.0.1 - - [16/Mar/2025 23:01:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-16 23:09:18,804 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:09:18,805 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:09:21,776 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:09:23,373 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:09:23,377 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:09:24,423 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:09:24,424 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-16 23:09:26,552 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:09:27,758 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:09:27,761 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:09:53,663 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:09:53,663 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:09:56,528 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:09:57,743 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:09:57,746 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:10:01,833 - werkzeug - INFO - 192.168.29.59 - - [16/Mar/2025 23:10:01] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-16 23:10:01,837 - root - INFO - Received SessionId: sess_1d4wgrf7k for query: hi
+2025-03-16 23:10:04,777 - root - INFO - User info updated for session sess_1d4wgrf7k
+2025-03-16 23:10:06,761 - root - INFO - Sending response: {'response': "Hello! Thank you for reaching out. We offer natural healing therapies at R K Nature Cure Home. Please call us for more details. Our natural healing approach focuses on your body's self-healing ability.\n\nCan you share your name and number to help us better?", 'SessionId': 'sess_1d4wgrf7k', 'name': None, 'phone': None, 'keyword_id': None, 'template': 'General'}
+2025-03-16 23:10:06,766 - werkzeug - INFO - 192.168.29.59 - - [16/Mar/2025 23:10:06] "POST /submit_query HTTP/1.1" 200 -
+2025-03-16 23:12:56,243 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:12:56,244 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:12:56,244 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:12:58,937 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-16 23:13:00,137 - werkzeug - WARNING -  * Debugger is active!
+2025-03-16 23:13:00,140 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-16 23:13:02,711 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:13:02,712 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-16 23:13:02,713 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
