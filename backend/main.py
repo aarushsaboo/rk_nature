@@ -3,13 +3,20 @@ import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from config import DEBUG, HOST, PORT
-from database import log_chat, update_summary, get_chat_data, get_content_by_id
-from llm_service import batch_process_queries, match_query_to_keyword, extract_name, generate_response_with_batch, generate_summary
+from database import log_chat, update_summary, get_chat_data, get_content_by_id, update_user_info
+from llm_service import generate_response, ai_clubbed
+from database import fetch_keywords_data, get_user_info
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
+# Set up logging to both file and console
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler()
+    ]
+)
 
-# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
@@ -19,7 +26,6 @@ def submit_query():
     user_query = data.get('Query')
     session_id = data.get('SessionId')
     
-    # Validate inputs
     if not user_query:
         return jsonify({"error": "Missing Query!"}), 400
     if not session_id:
@@ -27,56 +33,98 @@ def submit_query():
     
     logging.info(f"Received SessionId: {session_id} for query: {user_query}")
     
-    # Core processing logic
     return asyncio.run(process_query(session_id, user_query))
 
 async def process_query(session_id, user_query):
-    try:
-        # Get existing chat data first to avoid delays later
-        chat_data = await get_chat_data(session_id)
-        existing_summary = chat_data['summary'] if chat_data and 'summary' in chat_data else None
-        
-        # Process the query in a batch to reduce LLM calls
-        batch_results = await batch_process_queries(user_query)
-        
-        # Get matched keyword ID and content
-        matched_id = batch_results.get("keyword_id")
-        
-        # Fallback to original method if batch processing fails
-        if matched_id is None:
-            matched_id = match_query_to_keyword(user_query)
-            
-        content = get_content_by_id(matched_id) if matched_id else ""
-        
-        # Generate response using batch results to avoid duplicate LLM calls
-        response = await generate_response_with_batch(user_query, content, batch_results)
-        
-        # Log the conversation
-        new_log_entry = f"User: {user_query} | Bot: {response}"
-        await log_chat(session_id, new_log_entry)
-        
-        # Generate and update summary (using original method)
-        summary = generate_summary(existing_summary, new_log_entry)
-        await update_summary(session_id, summary)
-        
-        # Add prompts for missing information
-        final_answer = response
-        
-        if "User: Unknown" in summary and "Phone: Unknown" in summary:
-            final_answer += "\n\nCan you share your name and number to help us better?"
-        elif "User: Unknown" in summary:
-            final_answer += "\n\nCan you share your name to help us better?"
-        elif "Phone: Unknown" in summary:
-            final_answer += "\n\nCan you share your number to help us better?"
-        
-        return jsonify({"response": final_answer, "SessionId": session_id})
-        
-    except Exception as e:
-        logging.error(f"Error processing query: {e}", exc_info=True)
-        return jsonify({
-            "response": "I'm experiencing technical difficulties. Please try again later or call R K Nature Cure Home directly.", 
-            "SessionId": session_id
-        })
+    # Fetch existing user info from database (if any)
+    existing_info = await get_user_info(session_id)
+    existing_keyword_id = existing_info.get('keyword_id')
+    existing_name = existing_info.get('name')
+    existing_phone = existing_info.get('phone')
+    existing_template = existing_info.get('template')
+    
+    # Fetch keyword options for AI prompt
+    data_dict = fetch_keywords_data()
+    keyword_options = [f"ID: {id} - Keyword: {info['keyword']}" for id, info in data_dict.items()]
+    # 'ID: 1 - Keyword: Information about company RK Nature Cure Home, its founders, vision, mission etc', 'ID: 2 - Keyword: Select this for information about the Treatments , Therapies and Facilities provided by RK Nature ', 'ID: 3 - Keyword: Select this for information about the details related to accomodation, rates, charges, price of different services at RK Nature'
+    
+    # Define template options
+    template_options = [
+    "General", "Hello", "Introduction", "AboutUs", 
+    "Appointment", "BookingProcess", "FirstVisitInfo", 
+    "Treatment", "TherapyOptions", "BackPain", "JointPain", "Stress", "Diabetes", 
+    "Pricing", "Packages", "Insurance",
+    "Location", "ContactInfo", "Directions", 
+    "Hours", "OnlineServices", "Accommodation",
+    "Wellness", "YogaPrograms", "DetoxPrograms", 
+    "FirstVisit", 
+    "Diet", "DietaryGuidance", 
+    "Covid", "SafetyProtocols", 
+    "Emergency", 
+    "Testimonials", 
+    "Doctors", 
+    "Consultation", 
+    "Follow-up", "HomeRemedies", 
+    "TreatmentDuration", "ShortStay",
+    "HealthIssueGeneral"
+]
+    
+    # Call the combined AI function
+    keyword_id, name, phone, template, summary = ai_clubbed(user_query, keyword_options, template_options)
+    
+    # Use existing values if new ones aren't found
+    keyword_id = keyword_id if keyword_id is not None else existing_keyword_id
+    name = name if name is not None else existing_name
+    logging.info(f"Name: {name}")
+    phone = phone if phone is not None else existing_phone
+    template = template if template is not None else (existing_template or "General")
+    
+    # Store or update user info in database
+    new_user_info = {
+        'keyword_id': keyword_id,
+        'name': name,
+        'phone': phone,
+        'template': template
+    }
+    await update_user_info(session_id, new_user_info)
+    
+    # Get content based on matched keyword
+    content = get_content_by_id(keyword_id) if keyword_id else ""
+    
+    # Update chat summary
+    await update_summary(session_id, summary)
+    
+    # Generate response - pass new_summary to generate_response
+    answer = generate_response(user_query, content, name, template, summary)
+    
+    # Log the conversation
+    new_log_entry = f"User: {user_query} | Bot: {answer}"
+    await log_chat(session_id, new_log_entry)
+    
+    # Get chat history
+    chat_data = await get_chat_data(session_id)
+    
+    # Add prompts for missing information if needed
+    final_answer = answer
+    
+    # Only ask for missing info if we haven't stored it already
+    if name is None and phone is None:
+        final_answer += "\n\nCan you share your name and number to help us better?"
+    elif name is None:
+        final_answer += "\n\nCan you share your name to help us better?"
+    elif phone is None:
+        final_answer += "\n\nCan you share your number to help us better?"
+    
+    response_data = {
+    "response": final_answer, 
+    "SessionId": session_id,
+    "name": name,
+    "phone": phone,
+    "keyword_id": keyword_id,
+    "template": template
+    }
+    logging.info(f"Sending response: {response_data}")
+    return jsonify(response_data)
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)
