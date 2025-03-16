@@ -4,8 +4,11 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from config import GOOGLE_API_KEY, LLM_MODEL
 from database import fetch_keywords_data
 
-# Initialize LLM with Gemini
 llm = ChatGoogleGenerativeAI(model=LLM_MODEL, google_api_key=GOOGLE_API_KEY)
+
+def ai_clubbed():
+    # stuff
+    pass
 
 def match_query_to_keyword(query):
     data_dict = fetch_keywords_data()
@@ -26,10 +29,8 @@ def extract_name(query):
     return response if response != "Unknown" else None
 
 def generate_response(query, content, name=None):
-    # Simple, friendly greeting
     greeting = f"Hi {name}!" if name and name != "Unknown" else "Hello!"
     
-    # Check if a name or phone number is being provided
     name_or_number_check = (
         f"Analyze this message carefully: '{query}'. "
         f"Is this ONLY providing personal information like a name or phone number, with NO question, "
@@ -42,20 +43,17 @@ def generate_response(query, content, name=None):
     if is_just_name_or_number:
         return f"{greeting} Thank you for that information. How can we help you today?"
     
-    # List of common health conditions to check for
     health_conditions = [
         "back pain", "headache", "stress", "anxiety", "weight", "kidney", 
         "blood pressure", "asthma", "digestion", "sleep", "joint pain"
     ]
     
-    # Check if query mentions any health condition
     mentioned_conditions = []
     for condition in health_conditions:
         if condition in query.lower():
             mentioned_conditions.append(condition)
     
     if mentioned_conditions:
-        # Modify the prompt to be more proactive with suggestions
         condition_str = ", ".join(mentioned_conditions)
         prompt = (
             f"You are a friendly receptionist at R K Nature Cure Home, a naturopathy hospital. "
