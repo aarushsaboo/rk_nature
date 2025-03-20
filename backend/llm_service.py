@@ -24,6 +24,8 @@ def ai_clubbed(user_query, bulk_content, template_choices, chat_summary=None, na
     context = ""
     if chat_summary:
         context = f"Chat history summary: {chat_summary}\n\n"
+    print("Name: ", name)
+    print("Phone: ", phone)
 
     # Basic assistant prompt
     base_prompt = (
@@ -131,18 +133,18 @@ def ai_clubbed(user_query, bulk_content, template_choices, chat_summary=None, na
         
         f"AVAILABLE CONTENT:\n{content_section}\n\n"
         
-        f"Task 1: Extract the user's name from this query if provided. "
-        f"Return the name as a single word or phrase (e.g., 'John') or 'Unknown' if no name is found.\n\n"
+        f"Task 1: The user's name is already known to be '{name}' if not None. If the user asks about their name, tell them their name is '{name}'. Only look for a new name in the query if it appears to be different from the existing known name.\n\n"
+        f"Return the name as a single word or phrase (e.g., 'John') or 'Unknown' if no name is found. The name might be {name}. If the user asks his name, tell it to him if you have the information.\n\n"
         
         f"Task 2: Extract the user's phone number from this query if provided. "
-        f"Return just the digits of the phone number or 'Unknown' if no phone number is found.\n\n"
+        f"Return just the digits of the phone number or 'Unknown' if no phone number is found. The number might be {phone}\n\n"
         
         f"Task 3: Choose the most suitable template out of the following options: {', '.join(template_choices)}. "
-        f"If no template is appropriate, use 'Unknown'.\n\n"
+        f"If no template is appropriate, use 'Unknown'. Just follow the template's specific instructions & write the name of the template here ( write Unknown if no template exists)\n\n"
         
-        f"Task 4: Provide a concise two-line summary of what your response is going to be. "
-        f"Include a second line in this format: 'User: [name], Phone: [phone], Interested in: [topic]' "
-        f"where [name], [phone], and [topic] are extracted from the query or 'Unknown' if not found.\n\n"
+        f"Task 4: Provide a concise two-line summary of any important details, and the conversation history. "
+        # f"Include a second line in this format: 'User: [name], Phone: [phone], Interested in: [topic]' "
+        # f"where [name], [phone], and [topic] are extracted from the query or 'Unknown' if not found.\n\n"
         
         f"Task 5: {base_prompt}"
         f"Use the template guidance to shape your response:\n\n{template_guidance_str}\n\n"
@@ -157,7 +159,6 @@ def ai_clubbed(user_query, bulk_content, template_choices, chat_summary=None, na
     
     # Make the API call
     ai_response = llm.invoke(prompt).content
-    logging.info(f"Raw AI response: {ai_response}")
     
     # Extract all components
     name_match = re.search(r'Name: (.+)', ai_response)

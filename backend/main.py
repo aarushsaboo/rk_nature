@@ -31,7 +31,7 @@ def submit_query():
     if not session_id:
         return jsonify({"error": "Missing SessionId!"}), 400
     
-    logging.info(f"Received SessionId: {session_id} for query: {user_query}")
+    # logging.info(f"Received SessionId: {session_id} for query: {user_query}")
     
     return asyncio.run(process_query(session_id, user_query))
 
@@ -49,7 +49,7 @@ async def process_query(session_id, user_query):
     existing_summary = await get_chat_data(session_id)
     
     # Call the AI function with all content
-    name, phone, summary, response = ai_clubbed(
+    new_name, new_phone, summary, response = ai_clubbed(
         user_query, 
         bulk_content, 
         # template_options, 
@@ -57,11 +57,11 @@ async def process_query(session_id, user_query):
         existing_name,
         existing_phone
     )
-    
+
     # Use existing values if new ones aren't found
-    name = name if name is not None else existing_name
-    phone = phone if phone is not None else existing_phone
-    
+    name = new_name if new_name is not None else existing_name
+    phone = new_phone if new_phone is not None else existing_phone
+
     logging.info(f"Name: {name}, Phone number: {phone}")
     
     # Store or update user info in database
@@ -95,7 +95,7 @@ async def process_query(session_id, user_query):
         "name": name,
         "phone": phone
     }
-    logging.info(f"Sending response: {response_data}")
+    logging.info(f"Response to the user: {response_data}")
     return jsonify(response_data)
 
 if __name__ == '__main__':
