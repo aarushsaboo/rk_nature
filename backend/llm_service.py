@@ -1,110 +1,35 @@
 import re
 import logging
-import asyncio
 from langchain_google_genai import ChatGoogleGenerativeAI
 from config import GOOGLE_API_KEY, LLM_MODEL
 
 llm = ChatGoogleGenerativeAI(model=LLM_MODEL, google_api_key=GOOGLE_API_KEY)
-def ai_clubbed(user_query, keyword_choices, template_choices):
-    # Combine prompts from the original functions to create a comprehensive batch request
-    prompt = (
-        f"Analyze this user query carefully: '{user_query}'\n\n"
-        
-        # Modified to ensure one of the provided keyword IDs is always chosen
-        f"Task 1: Choose the most suitable keyword ID from this list: {', '.join(keyword_choices)}.\n"
-        f"You MUST select one of the provided keyword IDs even if the match is not perfect. "
-        f"Choose the best available option.\n\n"
-        
-        # From extract_name function
-        f"Task 2: Extract the user's name from this query if provided. "
-        f"Return the name as a single word or phrase (e.g., 'John') or 'Unknown' if no name is found.\n\n"
-        
-        # New phone extraction (similar to how name extraction was done)
-        f"Task 3: Extract the user's phone number from this query if provided. "
-        f"Return just the digits of the phone number or 'Unknown' if no phone number is found.\n\n"
-        
-        # Template selection
-        f"Task 4: Choose the most suitable template out of the following options: {', '.join(template_choices)}. "
-        f"If no template is appropriate, use 'Default'.\n\n"
-        
-        # From generate_summary function
-        f"Task 5: Provide a concise two-line summary of what your response is going to be."
-        f"Include a second line in this format: 'User: [name], Phone: [phone], Interested in: [product]' "
-        f"where [name], [phone], and [product] are extracted from the query or 'Unknown' if not found.\n\n"
-        
-        f"Format your response exactly like this:\n"
-        f"Keyword ID: [ID - must be 1, 2, or 3]\n"
-        f"Name: [Name or Unknown]\n"
-        f"Phone: [Phone or Unknown]\n"
-        f"Template: [Template or Default]\n"
-        f"Summary: [Summary]"
-    )
-    
-    response = llm.invoke(prompt).content
-    
-    # Extract keyword ID with fallback to ID 1 if extraction fails
-    keyword_match = re.search(r'Keyword ID: (\d+)', response)
-    if keyword_match:
-        keyword_id_str = keyword_match.group(1).strip()
-        keyword_id = int(keyword_id_str) if keyword_id_str.isdigit() else 1
-    else:
-        keyword_id = 2  # Default to first keyword if extraction fails
-    
-    # Ensure keyword_id is valid (1, 2, or 3)
-    if keyword_id not in [1, 2, 3]:
-        keyword_id = 2
-    
-    # Extract name
-    name_match = re.search(r'Name: (.+)', response)
-    name_str = name_match.group(1).strip() if name_match else "Unknown"
-    name = name_str if name_str != "Unknown" else None
-    
-    # Extract phone
-    phone_match = re.search(r'Phone: (.+)', response)
-    phone_str = phone_match.group(1).strip() if phone_match else "Unknown"
-    phone = phone_str if phone_str != "Unknown" else None
-    
-    # Extract template
-    template_match = re.search(r'Template: (.+)', response)
-    template_str = template_match.group(1).strip() if template_match else "Default"
-    template = template_str if template_str != "Default" else None
-    
-    # Extract summary
-    summary_match = re.search(r'Summary: (.+)', response, re.DOTALL)
-    summary = summary_match.group(1).strip() if summary_match else ""
 
-    logging.info(f"AI Clubbed Response: Keyword ID: {keyword_id}, Name: {name}, Phone: {phone}, Template: {template}, Summary: {summary}")
-    
-    return [keyword_id, name, phone, template, summary]
-
-def generate_response(user_query, content, name=None, phone=None, template=None, chat_summary=None):
+def ai_clubbed(user_query, bulk_content, template_choices, chat_summary=None, name=None, phone=None):
     """
-    Generate a response based on user query, content, and user information
+    Process user query and generate all needed data in a single API call
     
     Args:
         user_query (str): The user's query
-        content (str): Content retrieved from the database for the matched keyword
-        name (str, optional): User's name if available
-        phone (str, optional): User's phone number if available
-        template (str, optional): Template type to use for the response
+        bulk_content (dict): Dictionary of all content with ID as key
+        template_choices (list): List of available templates
         chat_summary (str, optional): Summary of the chat conversation so far
+        name
+        phone
     
     Returns:
-        str: Generated response
+        tuple: (name, phone, summary, response)
     """
-    # Prepare name for greeting if available
-    name_slot = f" {name}" if name else ""
-    
     # Include chat summary in context if available
     context = ""
     if chat_summary:
-        context = f"Chat history summary: {chat_summary}\n"
-    
+        context = f"Chat history summary: {chat_summary}\n\n"
+
     # Basic assistant prompt
     base_prompt = (
         f"You are a friendly receptionist at R K Nature Cure Home, a naturopathy hospital. "
         f"We are asking user to provide name and number through other function, incase they reply with name or number, just say thank you and ask how can we help you. "
-        f"Answer the user's question in a warm, concise tone (max 2 lines total, including greeting), using this info: '{content}'. "
+        f"Answer the user's question in a warm, concise tone (max 2 lines total, including greeting). "
         f"Keep it extremely concise and avoid technical terms. If the info isn't enough, briefly suggest contacting us. User query: '{user_query}'"
 
         f" Proactively list the therapies offered if the user query is about a specific health issue, and be sympathetic & conscious of the other person's pain. "
@@ -120,7 +45,7 @@ def generate_response(user_query, content, name=None, phone=None, template=None,
         
         "HealthIssueGeneral": "Acknowledge their health concerns and mention all the holistic solutions offered.",
         
-        "BackPain": "Express sympathy for their back pain and mention all the different therapies offered.",
+        "BackPain": "Acknowledge their back pain and mention all the different therapies offered.",
         
         "JointPain": "Acknowledge that joint pain can be debilitating and mention our mud therapy and physiotherapy.",
         
@@ -131,8 +56,6 @@ def generate_response(user_query, content, name=None, phone=None, template=None,
         "Location": "Share our address: Krishna Layout, Ganapathy, Coimbatore - 641006.",
         
         "OurContactDetails": "Provide our contact number +91 88700-66622 and mention reception hours (6 AM to 8 PM).",
-
-        "YourContactDetails": f"Provided the {name} and {phone} are already collected, just say thank you and tell them you will contact them. If not, ask for further details.",
         
         "Directions": "Offer simple directions to our facility.",
         
@@ -190,18 +113,70 @@ def generate_response(user_query, content, name=None, phone=None, template=None,
         
         "Testimonials": "Mention patient success stories and improvements.",
         
-        "General": "Provide a general helpful response and ask how else we can assist."
+        "General": "Provide a general helpful response and ask how else we can assist.",
+
+        "Unknown": "Answer in the way you think will help the user, provide our phone (+91 88700-66622) "
     }
     
-    # Default to General if template not provided or invalid
-    if not template or template not in template_guidance:
-        template = "General"
+    # Format all template guidance for the prompt
+    template_guidance_str = "\n".join([f"- {template}: {guidance}" for template, guidance in template_guidance.items()])
     
-    # Create the final prompt with template-specific guidance
-    assistant_prompt = f"{base_prompt}\n\nSpecific guidance: {template_guidance[template]}"
+    # Format content for the prompt
+    content_section = "\n".join([f"Content ID {id}:\n{content}" for id, content in bulk_content.items()])
     
-    # In a real implementation, you would send this prompt to the AI service
+    # Combined prompt that handles all tasks
+    prompt = (
+        f"{context}"
+        f"Analyze this user query carefully: '{user_query}'\n\n"
+        
+        f"AVAILABLE CONTENT:\n{content_section}\n\n"
+        
+        f"Task 1: Extract the user's name from this query if provided. "
+        f"Return the name as a single word or phrase (e.g., 'John') or 'Unknown' if no name is found.\n\n"
+        
+        f"Task 2: Extract the user's phone number from this query if provided. "
+        f"Return just the digits of the phone number or 'Unknown' if no phone number is found.\n\n"
+        
+        f"Task 3: Choose the most suitable template out of the following options: {', '.join(template_choices)}. "
+        f"If no template is appropriate, use 'Unknown'.\n\n"
+        
+        f"Task 4: Provide a concise two-line summary of what your response is going to be. "
+        f"Include a second line in this format: 'User: [name], Phone: [phone], Interested in: [topic]' "
+        f"where [name], [phone], and [topic] are extracted from the query or 'Unknown' if not found.\n\n"
+        
+        f"Task 5: {base_prompt}"
+        f"Use the template guidance to shape your response:\n\n{template_guidance_str}\n\n"
+        
+        f"Format your response exactly like this:\n"
+        f"Name: [Name or Unknown]\n"
+        f"Phone: [Phone or Unknown]\n"
+        f"Template: [Template or General]\n"
+        f"Summary: [Summary]\n"
+        f"Response: [Your actual response to the user]"
+    )
     
-    response = llm.invoke(assistant_prompt).content
+    # Make the API call
+    ai_response = llm.invoke(prompt).content
+    logging.info(f"Raw AI response: {ai_response}")
     
-    return response  
+    # Extract all components
+    name_match = re.search(r'Name: (.+)', ai_response)
+    name_str = name_match.group(1).strip() if name_match else "Unknown"
+    name = name_str if name_str != "Unknown" else None
+    
+    phone_match = re.search(r'Phone: (.+)', ai_response)
+    phone_str = phone_match.group(1).strip() if phone_match else "Unknown"
+    phone = phone_str if phone_str != "Unknown" else None
+    
+    template_match = re.search(r'Template: (.+)', ai_response)
+    template_str = template_match.group(1).strip() if template_match else "General"
+    
+    summary_match = re.search(r'Summary: (.+?)(?=Response:|$)', ai_response, re.DOTALL)
+    summary = summary_match.group(1).strip() if summary_match else ""
+    
+    response_match = re.search(r'Response: (.+)', ai_response, re.DOTALL)
+    response = response_match.group(1).strip() if response_match else "I'm here to help you with information about RK Nature Cure Home. How can I assist you today?"
+    
+    logging.info(f"Processed response - Name: {name}, Phone: {phone}, Template: {template_str}, Summary length: {len(summary)}, Response length: {len(response)}")
+    
+    return name, phone, summary, response
