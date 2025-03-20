@@ -151,7 +151,7 @@ async def update_user_info(session_id, user_info):
             user_info.get('phone'), 
             user_info.get('template'))
         
-        logging.info(f"User info updated for session {session_id}")
+        # logging.info(f"User info updated for session {session_id}")
     except Exception as e:
         logging.error(f"Error updating user info: {e}")
     finally:

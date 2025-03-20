@@ -1,0 +1,207 @@
+2025-03-21 00:03:39,266 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:03:39,270 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:03:41,886 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:03:43,108 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:03:43,111 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:03:48,553 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:03:48,557 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:03:48,559 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:03:51,432 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:03:52,570 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:03:52,573 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:04:02,435 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:04:02,435 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:04:04,946 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:04:06,078 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:04:06,080 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:04:09,689 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:04:09,692 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:04:09,692 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:04:12,318 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:04:13,455 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:04:13,458 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:06:37,282 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\__init__.py', reloading
+2025-03-21 00:06:37,317 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\coroutines.py', reloading
+2025-03-21 00:06:37,327 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\events.py', reloading
+2025-03-21 00:06:37,341 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\exceptions.py', reloading
+2025-03-21 00:06:37,350 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\futures.py', reloading
+2025-03-21 00:06:37,360 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\locks.py', reloading
+2025-03-21 00:06:37,372 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\protocols.py', reloading
+2025-03-21 00:06:37,382 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\queues.py', reloading
+2025-03-21 00:06:37,390 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\streams.py', reloading
+2025-03-21 00:06:37,403 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\subprocess.py', reloading
+2025-03-21 00:06:37,412 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\tasks.py', reloading
+2025-03-21 00:06:37,427 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\taskgroups.py', reloading
+2025-03-21 00:06:37,436 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\timeouts.py', reloading
+2025-03-21 00:06:37,444 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\threads.py', reloading
+2025-03-21 00:06:37,452 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\transports.py', reloading
+2025-03-21 00:06:37,468 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\windows_events.py', reloading
+2025-03-21 00:06:39,917 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:06:41,182 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:06:41,185 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:20:47,789 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\config.py', reloading
+2025-03-21 00:20:50,340 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:20:51,467 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:20:51,470 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:35:32,693 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:35:32,697 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\main.py', reloading
+2025-03-21 00:35:35,272 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:39:53,287 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.29.60:8000
+2025-03-21 00:39:53,287 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-21 00:39:53,292 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:39:54,462 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:39:54,465 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:40:36,417 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:40:36] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:40:39,848 - root - INFO - Processed response - Name: Aarush, Phone: None, Template: Hello, Summary length: 85, Response length: 72
+2025-03-21 00:40:39,849 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:40:42,023 - root - INFO - Response to the user: {'response': 'Hello Aarush, welcome to RK Nature Cure Home! How can we help you today?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:40:42,028 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:40:42] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:40:55,954 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:40:55] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:41:55,982 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\venv\\Lib\\site-packages\\flask_cors\\extension.py', reloading
+2025-03-21 00:41:56,011 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:41:56] "[35m[1mPOST /submit_query HTTP/1.1[0m" 500 -
+2025-03-21 00:41:58,574 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:41:59,701 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:41:59,707 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:42:28,300 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:42:28] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:42:31,222 - root - INFO - Processed response - Name: Aarush, Phone: None, Template: Hello, Summary length: 116, Response length: 77
+2025-03-21 00:42:31,224 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:42:33,371 - root - INFO - Response to the user: {'response': 'Hello Aarush!  Welcome back to RK Nature Cure Home. How can I help you today?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:42:33,375 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:42:33] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:43:19,103 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:43:19] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:43:22,612 - root - INFO - Processed response - Name: Aarush, Phone: None, Template: Hello, Summary length: 211, Response length: 98
+2025-03-21 00:43:22,613 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:43:24,761 - root - INFO - Response to the user: {'response': 'Hello Aarush! Welcome back to RK Nature Cure Home.  Your name is Aarush; how can I help you today?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:43:24,766 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:43:24] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:43:39,754 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:43:39] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:43:42,956 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: JointPain, Summary length: 166, Response length: 222
+2025-03-21 00:43:42,958 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:43:45,115 - root - INFO - Response to the user: {'response': "Hello Aarush, I'm so sorry to hear about your knee pain. We offer mud therapy and physiotherapy which can help alleviate joint pain.  To create a personalized plan, could you please share some more details about your pain?", 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:43:45,118 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:43:45] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:46:32,816 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:46:32] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:46:35,824 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: General, Summary length: 208, Response length: 85
+2025-03-21 00:46:35,825 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:46:37,999 - root - INFO - Response to the user: {'response': 'Hello Aarush!  Thank you for providing your number. How can I help you further today?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:46:38,003 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:46:38] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:47:40,640 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:47:40] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:47:43,896 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: General, Summary length: 235, Response length: 76
+2025-03-21 00:47:43,897 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:47:46,012 - root - INFO - Response to the user: {'response': 'Hello Aarush! Thank you for providing your number. How can I help you today?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:47:46,014 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:47:46] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:53:02,281 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\prompt_builder.py', reloading
+2025-03-21 00:53:02,284 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\prompt_builder.py', reloading
+2025-03-21 00:53:02,285 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\prompt_builder.py', reloading
+2025-03-21 00:53:04,910 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:53:06,162 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:53:06,165 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:53:09,857 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:53:09] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:53:13,543 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: General, Summary length: 208, Response length: 106
+2025-03-21 00:53:13,544 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:53:15,646 - root - INFO - Response to the user: {'response': 'Hello Aarush!  Thank you for confirming your number. How can I help you further today with your knee pain?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:53:15,650 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:53:15] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:53:31,159 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.29.60:8000
+2025-03-21 00:53:31,160 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-21 00:53:31,165 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:53:32,280 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:53:32,283 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:53:36,132 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:53:36] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:53:41,107 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: General, Summary length: 192, Response length: 105
+2025-03-21 00:53:41,108 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:53:43,290 - root - INFO - Response to the user: {'response': 'Hello Aarush! Thank you for confirming your number. How can I help you further today with your knee pain?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:53:43,294 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:53:43] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:54:00,625 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:54:00] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:54:03,730 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: General, Summary length: 279, Response length: 78
+2025-03-21 00:54:03,731 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:54:05,912 - root - INFO - Response to the user: {'response': 'Hello Aarush!  Thank you for confirming your number. How can I help you today?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:54:05,916 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:54:05] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:54:17,612 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\prompt_builder.py', reloading
+2025-03-21 00:54:17,615 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\prompt_builder.py', reloading
+2025-03-21 00:54:17,615 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\prompt_builder.py', reloading
+2025-03-21 00:54:20,034 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:54:21,178 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:54:21,182 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:54:34,094 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\prompt_builder.py', reloading
+2025-03-21 00:54:34,097 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\prompt_builder.py', reloading
+2025-03-21 00:54:36,597 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 00:54:37,743 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 00:54:37,746 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 00:54:42,992 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:54:42] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:54:46,712 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: General, Summary length: 278, Response length: 70
+2025-03-21 00:54:46,713 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:54:48,884 - root - INFO - Response to the user: {'response': 'Hello Aarush!  Your number is 83883. How can I help you further today?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:54:48,886 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:54:48] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:55:09,216 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:55:09] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:55:12,301 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: Hello, Summary length: 170, Response length: 98
+2025-03-21 00:55:12,302 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:55:14,593 - root - INFO - Response to the user: {'response': 'Hello Aarush! Welcome back to RK Nature Cure Home.  Your name is Aarush; how can I help you today?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:55:14,597 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:55:14] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:56:05,209 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:56:05] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:56:08,835 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: JointPain, Summary length: 136, Response length: 177
+2025-03-21 00:56:08,836 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 00:56:11,101 - root - INFO - Response to the user: {'response': 'Hello Aarush!  Joint pain can be really tough. We offer mud therapy and physiotherapy to help.  To create a plan just for you, could you share some more details about your pain?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 00:56:11,104 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:56:11] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:57:16,358 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:57:16] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:57:18,920 - root - INFO - Processed response - Name: None, Phone: None, Template: Hello, Summary length: 50, Response length: 67
+2025-03-21 00:57:18,921 - root - INFO - Name: None, Phone number: None
+2025-03-21 00:57:21,053 - root - INFO - Response to the user: {'response': 'Hi there! Welcome to RK Nature Cure Home. How can I help you today?\n\nCan you share your name and number to help us better?', 'SessionId': 'sess_df9zicch0', 'name': None, 'phone': None}
+2025-03-21 00:57:21,056 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:57:21] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:57:21,874 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:57:21] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:57:24,528 - root - INFO - Processed response - Name: Rufus, Phone: None, Template: Hello, Summary length: 114, Response length: 70
+2025-03-21 00:57:24,528 - root - INFO - Name: Rufus, Phone number: None
+2025-03-21 00:57:26,622 - root - INFO - Response to the user: {'response': 'Hello Rufus, welcome to RK Nature Cure Home! How can I help you today?\n\nCan you share your number to help us better?', 'SessionId': 'sess_df9zicch0', 'name': 'Rufus', 'phone': None}
+2025-03-21 00:57:26,627 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:57:26] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:57:28,136 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:57:28] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:57:31,087 - root - INFO - Processed response - Name: Rufus, Phone: None, Template: HealthIssueGeneral, Summary length: 130, Response length: 268
+2025-03-21 00:57:31,088 - root - INFO - Name: Rufus, Phone number: None
+2025-03-21 00:57:33,188 - root - INFO - Response to the user: {'response': "Hello Rufus, I'm so sorry to hear about your weak bones. We offer several therapies to strengthen bones naturally, including yoga, diet plans, and specific herbal treatments.  To create a personalized plan, please call us at +91 88700-66622 to schedule a consultation.\n\nCan you share your number to help us better?", 'SessionId': 'sess_df9zicch0', 'name': 'Rufus', 'phone': None}
+2025-03-21 00:57:33,197 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:57:33] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:57:47,889 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:57:47] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:57:51,023 - root - INFO - Processed response - Name: Rufus, Phone: None, Template: HealthIssueGeneral, Summary length: 176, Response length: 260
+2025-03-21 00:57:51,023 - root - INFO - Name: Rufus, Phone number: None
+2025-03-21 00:57:53,165 - root - INFO - Response to the user: {'response': 'Hello Rufus, I understand your privacy concerns.  We offer several natural ways to strengthen bones, including yoga, dietary plans, and herbal remedies. To discuss a personalized plan, please email us at enquiry@rknature.com with your preferred contact method.\n\nCan you share your number to help us better?', 'SessionId': 'sess_df9zicch0', 'name': 'Rufus', 'phone': None}
+2025-03-21 00:57:53,169 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:57:53] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 00:58:16,178 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:58:16] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 00:58:19,052 - root - INFO - Processed response - Name: Rufus, Phone: None, Template: General, Summary length: 186, Response length: 150
+2025-03-21 00:58:19,053 - root - INFO - Name: Rufus, Phone number: None
+2025-03-21 00:58:21,177 - root - INFO - Response to the user: {'response': 'Hello Rufus,  We look forward to receiving your email.  We offer several natural ways to strengthen bones; please let us know how we can help further.\n\nCan you share your number to help us better?', 'SessionId': 'sess_df9zicch0', 'name': 'Rufus', 'phone': None}
+2025-03-21 00:58:21,181 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 00:58:21] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 01:09:37,206 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-21 01:09:37,209 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-21 01:09:37,210 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-21 01:09:39,666 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 01:09:40,868 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 01:09:40,871 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 01:09:42,853 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-21 01:09:42,855 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-21 01:09:42,855 - werkzeug - INFO -  * Detected change in 'C:\\Users\\aarus\\Downloads\\rk-nature\\backend\\llm_service.py', reloading
+2025-03-21 01:09:45,070 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 01:09:46,205 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 01:09:46,208 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 01:10:22,763 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.29.60:8000
+2025-03-21 01:10:22,764 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-21 01:10:22,770 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-03-21 01:10:23,907 - werkzeug - WARNING -  * Debugger is active!
+2025-03-21 01:10:23,910 - werkzeug - INFO -  * Debugger PIN: 794-043-953
+2025-03-21 01:10:33,226 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 01:10:33] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 01:10:36,800 - root - INFO - Processed response - Name: Aarush, Phone: None, Template: Hello, Summary The user, Aarush, is a returning patient inquiring about his identity.  The bot successfully identifies him., Response length: 76
+2025-03-21 01:10:36,801 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 01:10:38,949 - root - INFO - Response to the user: {'response': 'Hello Aarush! Welcome back to RK Nature Cure Home. How can I help you today?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 01:10:38,953 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 01:10:38] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 01:10:40,441 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 01:10:40] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 01:10:43,698 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: JointPain, Summary Aarush, a returning patient with a known phone number, reports wrist pain.  The conversation history shows a pattern of the bot struggling to retain user information across sessions, highlighting a need for improved data management., Response length: 166
+2025-03-21 01:10:43,699 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 01:10:45,942 - root - INFO - Response to the user: {'response': 'Hello Aarush!  Wrist pain can be quite bothersome. We offer mud therapy and physiotherapy which may help; to create a personalized plan, could you share more details?', 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 01:10:45,947 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 01:10:45] "POST /submit_query HTTP/1.1" 200 -
+2025-03-21 01:11:13,441 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 01:11:13] "OPTIONS /submit_query HTTP/1.1" 200 -
+2025-03-21 01:11:16,812 - root - INFO - Processed response - Name: Aarush, Phone: 83883, Template: Pricing, Summary Aarush, a returning patient, inquires about pricing.  Previous conversation shows difficulty retaining user information across sessions., Response length: 188
+2025-03-21 01:11:16,813 - root - INFO - Name: Aarush, Phone number: 83883
+2025-03-21 01:11:19,011 - root - INFO - Response to the user: {'response': "Hello Aarush!  No, our treatments aren't free, but we offer various packages to suit different budgets.  To discuss costs and create a personalized plan, please call us at +91 88700-66622.", 'SessionId': 'sess_3gwj9xlqp', 'name': 'Aarush', 'phone': '83883'}
+2025-03-21 01:11:19,017 - werkzeug - INFO - 192.168.29.60 - - [21/Mar/2025 01:11:19] "POST /submit_query HTTP/1.1" 200 -
